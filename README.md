@@ -28,35 +28,21 @@ Cultify is an automation tool that books fitness classes at Cult.fit centers. It
 
 ## Prerequisites
 
-- Node.js 14+ or Bun runtime
 - Active Cult.fit membership
-- GitHub account (for automation)
-- Basic command line knowledge
+- GitHub account
 
-## Installation
+## Quick Start (Recommended)
 
-### Clone Repository
+Get started in 3 simple steps - no installation or coding required!
 
-```bash
-git clone https://github.com/YOUR_USERNAME/cultify.git
-cd cultify
-```
+### Step 1: Fork Repository
 
-### Install Dependencies
+1. Click the "Fork" button at the top right of this repository
+2. This creates your own copy of Cultify in your GitHub account
 
-```bash
-npm install
-# or
-bun install
-```
+### Step 2: Get Authentication
 
-## Configuration
-
-### Required: Authentication
-
-The script requires a curl command containing valid authentication cookies from your browser.
-
-#### Obtaining Curl Command
+You need a curl command containing your authentication cookies:
 
 1. Navigate to https://www.cult.fit and login
 2. Open browser Developer Tools (F12 or Cmd+Option+I on Mac)
@@ -64,8 +50,6 @@ The script requires a curl command containing valid authentication cookies from 
 4. Refresh page or navigate to any section
 5. Select any API request to `cult.fit` domain
 6. Right-click request → Copy → Copy as cURL (bash)
-
-#### Curl Command Format
 
 Your curl command should look like:
 
@@ -82,7 +66,76 @@ curl 'https://www.cult.fit/api/user/cities/v2' \
   -H 'referer: https://www.cult.fit/me/profile'
 ```
 
-### Environment Variables
+**Important:** Convert to single line by removing all backslashes and line breaks.
+
+### Step 3: Configure GitHub Secrets
+
+1. Go to your forked repository on GitHub
+2. Navigate to: **Settings** → **Secrets and variables** → **Actions**
+3. Click **New repository secret**
+4. Add the following secret:
+
+**Required:**
+- Name: `CURL_COMMAND`
+- Value: Your complete curl command (single line, no backslashes)
+
+**Optional Secrets** (customize if needed):
+
+| Secret Name | Description | Default | Example |
+|-------------|-------------|---------|---------|
+| `PREFERRED_CENTER` | Your gym center ID | 1515 | 151 |
+| `PREFERRED_SLOTS` | Comma-separated time slots | 07:00:00,08:00:00,09:00:00 | 18:00:00,19:00:00 |
+| `PREFERRED_WORKOUT` | Workout class name | HRX WORKOUT | DANCE FITNESS |
+| `ENABLE_WAITLIST` | Join waitlist when full | true | false |
+
+### Step 4: Enable GitHub Actions
+
+1. Go to the **Actions** tab in your forked repository
+2. Click "I understand my workflows, go ahead and enable them"
+3. Select "Auto Book Cult Class" workflow
+4. Click "Enable workflow" if needed
+
+**That's it!** The workflow will automatically run daily at 10:05 AM UTC (3:35 PM IST) and book your class.
+
+### Manual Trigger
+
+You can trigger booking immediately without waiting:
+
+1. Go to **Actions** tab
+2. Select **"Auto Book Cult Class"** workflow
+3. Click **"Run workflow"** button
+4. Click **"Run workflow"** to confirm
+
+### Monitor Bookings
+
+Check if your class was booked:
+
+1. Navigate to **Actions** tab
+2. Select the latest workflow run
+3. Click on the job to view logs
+4. Look for success message: "✓ Class booked successfully!"
+
+## Configuration Details
+
+### Finding Your Center ID
+
+If you want to use a specific gym center:
+
+1. Keep the default configuration first
+2. Run the workflow once (it will fail but show available centers)
+3. Check the logs in Actions tab
+4. Look for center IDs in the output:
+
+```json
+{
+  "151": { "centerName": "Cult HSR Layout" },
+  "634": { "centerName": "Cult Koramangala" }
+}
+```
+
+5. Add `PREFERRED_CENTER` secret with your center ID
+
+### Environment Variable Reference
 
 #### CURL_COMMAND (Required)
 
@@ -101,17 +154,6 @@ Numeric ID of your preferred Cult.fit center.
 **Example:**
 ```bash
 PREFERRED_CENTER=151
-```
-
-**Finding Your Center ID:**
-
-Run script once and check output for available centers:
-
-```json
-{
-  "151": { "centerName": "Center 1" },
-  "63": { "centerName": "Center 2" }
-}
 ```
 
 #### PREFERRED_SLOTS (Optional)
