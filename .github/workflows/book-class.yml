@@ -24,5 +24,9 @@ jobs:
       - name: Run booking script
         env:
           CURL_COMMAND: ${{ secrets.CURL_COMMAND }}
+          PREFERRED_CENTER: ${{ secrets.PREFERRED_CENTER }}
+          PREFERRED_SLOTS: ${{ secrets.PREFERRED_SLOTS }}
+          PREFERRED_WORKOUT: ${{ secrets.PREFERRED_WORKOUT }}
+          ENABLE_WAITLIST: ${{ secrets.ENABLE_WAITLIST }}
         run: bun index.js
 
