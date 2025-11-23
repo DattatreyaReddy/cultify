@@ -4,7 +4,9 @@ Automated Cult.fit class booking system using GitHub Actions.
 
 ## Overview
 
-Cultify is an automation tool that books fitness classes at Cult.fit centers. It authenticates using browser session cookies and can be scheduled to run automatically via GitHub Actions, eliminating the need for manual booking.
+Cultify is an automation tool that books fitness classes at Cult.fit centers. It authenticates using browser session cookies and runs automatically via GitHub Actions, eliminating the need for manual booking.
+
+**TL;DR:** Fork this repo → Add your Cult.fit login curl to GitHub Secrets → Enable Actions → Done! Classes book automatically.
 
 ## Features
 
@@ -14,8 +16,16 @@ Cultify is an automation tool that books fitness classes at Cult.fit centers. It
 - Waitlist support (joins queue when classes are full)
 - GitHub Actions integration for automated scheduling
 - Zero server costs (runs on GitHub infrastructure)
-- Secure credential management via environment variables
-- Local testing support
+- Secure credential management via GitHub Secrets
+- No installation required - just fork and configure!
+
+## Why Cultify?
+
+**No More Manual Booking!** Classes at Cult.fit fill up fast, especially popular morning slots. Cultify automatically books your preferred class as soon as booking opens, so you never miss your workout.
+
+**3-Minute Setup:** Fork → Add credentials → Enable Actions. That's it! No coding, no servers, no maintenance.
+
+**100% Free:** Runs on GitHub's infrastructure at no cost to you.
 
 ## How It Works
 
@@ -68,7 +78,9 @@ curl 'https://www.cult.fit/api/user/cities/v2' \
 
 **Important:** Convert to single line by removing all backslashes and line breaks.
 
-### Step 3: Configure GitHub Secrets
+### Step 3: Configure & Enable
+
+**Part A: Add GitHub Secrets**
 
 1. Go to your forked repository on GitHub
 2. Navigate to: **Settings** → **Secrets and variables** → **Actions**
@@ -88,14 +100,14 @@ curl 'https://www.cult.fit/api/user/cities/v2' \
 | `PREFERRED_WORKOUT` | Workout class name | HRX WORKOUT | DANCE FITNESS |
 | `ENABLE_WAITLIST` | Join waitlist when full | true | false |
 
-### Step 4: Enable GitHub Actions
+**Part B: Enable GitHub Actions**
 
 1. Go to the **Actions** tab in your forked repository
 2. Click "I understand my workflows, go ahead and enable them"
 3. Select "Auto Book Cult Class" workflow
 4. Click "Enable workflow" if needed
 
-**That's it!** The workflow will automatically run daily at 10:05 AM UTC (3:35 PM IST) and book your class.
+**That's it!** The workflow will automatically run daily at 10:05 PM IST and book your class.
 
 ### Manual Trigger
 
@@ -113,7 +125,7 @@ Check if your class was booked:
 1. Navigate to **Actions** tab
 2. Select the latest workflow run
 3. Click on the job to view logs
-4. Look for success message: "✓ Class booked successfully!"
+4. Look for success message: "Class booked successfully!"
 
 ## Configuration Details
 
@@ -227,7 +239,7 @@ Found HRX WORKOUT class at 07:00:00 on 2025-11-26
 Class ID: 7360552
 Status: WAITLIST (5 people already waitlisted)
 Action: Joining waitlist...
-✓ Class booked successfully!
+Class booked successfully!
 ```
 
 If you get a spot from waitlist, Cult.fit will notify you via app/email.
@@ -259,31 +271,33 @@ Use debug mode to troubleshoot:
 - Waitlist information
 - Filtering logic
 
-## Usage
+## Customizing Schedule
 
-### Local Execution
+The workflow runs at **10:05 PM IST** daily by default.
 
-#### Create .env File
+To change the schedule:
 
-```bash
-CURL_COMMAND=curl 'https://www.cult.fit/api/...' -H 'apikey: ...' -b '...'
-PREFERRED_CENTER=1515
-PREFERRED_SLOTS=07:00:00,08:00:00,09:00:00
-PREFERRED_WORKOUT=HRX WORKOUT
-ENABLE_WAITLIST=true
+1. Edit `.github/workflows/book-class.yml` in your forked repository
+2. Modify the cron expression:
+
+```yaml
+on:
+  schedule:
+    - cron: '5 10 * * *'  # minute hour day month weekday (UTC)
 ```
 
-**Important:** Remove all backslashes from curl command. It must be single line.
+**Example Schedules:**
 
-#### Run Script
+- `'35 4 * * *'` - 10:05 AM IST (4:35 AM UTC)
+- `'0 0 * * *'` - 5:30 AM IST (midnight UTC)
+- `'0 12 * * *'` - 5:30 PM IST (noon UTC)
+- `'30 23 * * *'` - 5:00 AM IST (11:30 PM UTC)
 
-```bash
-node index.js
-# or
-bun index.js
-```
+**Tip:** Cult.fit typically opens booking for next day around 10:00 AM IST.
 
-#### Expected Output
+## Expected Output
+
+When checking workflow logs in Actions tab, you'll see:
 
 **Available Class:**
 ```
@@ -306,127 +320,79 @@ Class booked successfully!
 You already have a class booked on 2025-11-26. Skipping booking.
 ```
 
-### GitHub Actions (Automated)
+## Local Testing (Optional)
 
-#### Setup Steps
+For developers who want to test locally before deploying:
 
-1. **Push Code to GitHub**
+### Installation
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/cultify.git
-git push -u origin master
+git clone https://github.com/YOUR_USERNAME/cultify.git
+cd cultify
+npm install  # or bun install
 ```
 
-2. **Configure Repository Secrets**
+### Create .env File
 
-Navigate to: Repository Settings → Secrets and variables → Actions
-
-Add the following secrets:
-
-**Required:**
-- Name: `CURL_COMMAND`
-- Value: Your complete curl command (single line, no backslashes)
-
-**Optional:**
-- Name: `PREFERRED_CENTER`
-- Value: Your center ID (e.g., `1515`)
-
-- Name: `PREFERRED_SLOTS`
-- Value: Comma-separated slots (e.g., `07:00:00,08:00:00,09:00:00`)
-
-- Name: `PREFERRED_WORKOUT`
-- Value: Workout name (e.g., `HRX WORKOUT`)
-
-- Name: `ENABLE_WAITLIST`
-- Value: `true` or `false` (default: `true`)
-
-3. **Enable GitHub Actions**
-
-- Go to repository Actions tab
-- Enable workflows if prompted
-
-#### Default Schedule
-
-The workflow runs at **10:05 AM UTC** daily.
-
-To modify schedule, edit `.github/workflows/book-class.yml`:
-
-```yaml
-on:
-  schedule:
-    - cron: '5 10 * * *'  # minute hour day month weekday (UTC)
+```bash
+CURL_COMMAND=curl 'https://www.cult.fit/api/...' -H 'apikey: ...' -b '...'
+PREFERRED_CENTER=1515
+PREFERRED_SLOTS=07:00:00,08:00:00,09:00:00
+PREFERRED_WORKOUT=HRX WORKOUT
+ENABLE_WAITLIST=true
 ```
 
-**Example Schedules:**
+**Important:** Remove all backslashes from curl command. It must be single line.
 
-- `'35 4 * * *'` - 10:05 AM IST (4:35 AM UTC)
-- `'0 0 * * *'` - 5:30 AM IST (midnight UTC)
-- `'0 12 * * *'` - 5:30 PM IST (noon UTC)
+### Run Script
 
-#### Manual Trigger
-
-Workflows can be triggered manually:
-
-1. Go to Actions tab
-2. Select "Auto Book Cult Class" workflow
-3. Click "Run workflow" button
-4. Confirm execution
-
-#### Monitoring
-
-Check workflow execution logs:
-
-1. Navigate to Actions tab
-2. Select workflow run
-3. View logs for booking status and errors
+```bash
+node index.js
+# or
+bun index.js
+```
 
 ## Configuration Examples
 
+Add these as GitHub Secrets (Settings → Secrets and variables → Actions):
+
 ### Example 1: Default Morning HRX
 
-```bash
-CURL_COMMAND=curl '...'
-```
+**Required Secret:**
+- `CURL_COMMAND`: Your curl command
 
 Uses defaults: Center 1515, 7-9 AM slots, HRX WORKOUT
 
 ### Example 2: Evening Dance Classes
 
-```bash
-CURL_COMMAND=curl '...'
-PREFERRED_SLOTS=18:00:00,19:00:00,20:00:00
-PREFERRED_WORKOUT=DANCE FITNESS
-```
+**Secrets:**
+- `CURL_COMMAND`: Your curl command
+- `PREFERRED_SLOTS`: `18:00:00,19:00:00,20:00:00`
+- `PREFERRED_WORKOUT`: `DANCE FITNESS`
 
 ### Example 3: Different Center
 
-```bash
-CURL_COMMAND=curl '...'
-PREFERRED_CENTER=634
-PREFERRED_WORKOUT=BURN
-```
+**Secrets:**
+- `CURL_COMMAND`: Your curl command
+- `PREFERRED_CENTER`: `634`
+- `PREFERRED_WORKOUT`: `BURN`
 
 ### Example 4: Disable Waitlist
 
-```bash
-CURL_COMMAND=curl '...'
-ENABLE_WAITLIST=false
-```
+**Secrets:**
+- `CURL_COMMAND`: Your curl command
+- `ENABLE_WAITLIST`: `false`
 
 Only books classes with available seats. Skips full classes.
 
 ### Example 5: Full Customization
 
-```bash
-CURL_COMMAND=curl '...'
-PREFERRED_CENTER=634
-PREFERRED_SLOTS=17:00:00,18:00:00
-PREFERRED_WORKOUT=BOXING BAG WORKOUT
-ENABLE_WAITLIST=true
-```
+**Secrets:**
+- `CURL_COMMAND`: Your curl command
+- `PREFERRED_CENTER`: `634`
+- `PREFERRED_SLOTS`: `17:00:00,18:00:00`
+- `PREFERRED_WORKOUT`: `BOXING BAG WORKOUT`
+- `ENABLE_WAITLIST`: `true`
 
 ## Troubleshooting
 
@@ -437,12 +403,12 @@ ENABLE_WAITLIST=true
 Login Required!
 ```
 
-**Cause:** Session cookies expired
+**Cause:** Session cookies expired (typically after 7-30 days)
 
 **Solution:**
-1. Get fresh curl command from browser
-2. Update CURL_COMMAND in .env or GitHub Secret
-3. Retry
+1. Get fresh curl command from browser (see Step 2 in Quick Start)
+2. Update `CURL_COMMAND` GitHub Secret in your repository
+3. Manually trigger workflow to test (Actions → Run workflow)
 
 ### No Classes Found
 
@@ -474,18 +440,25 @@ You already have a class booked on 2025-11-26. Skipping booking.
 
 ### Workflow Not Running
 
-**Possible Causes:**
-- GitHub Actions disabled
-- Incorrect cron syntax
-- Repository permissions
+**Check These:**
 
-**Solution:**
-1. Enable Actions in repository settings
-2. Verify workflow file exists in `.github/workflows/`
-3. Check cron syntax is valid
-4. Ensure repository has Actions permissions
+1. **Actions Enabled?**
+   - Go to Actions tab
+   - If you see "Workflows disabled", click "I understand my workflows, go ahead and enable them"
 
-## Development
+2. **Secrets Configured?**
+   - Go to Settings → Secrets and variables → Actions
+   - Verify `CURL_COMMAND` secret exists and is not empty
+
+3. **Workflow Enabled?**
+   - Go to Actions → "Auto Book Cult Class"
+   - If disabled, click the three dots → Enable workflow
+
+4. **Manual Test:**
+   - Actions → "Auto Book Cult Class" → "Run workflow"
+   - Check logs for any errors
+
+## Advanced Usage
 
 ### Project Structure
 
@@ -497,7 +470,7 @@ cultify/
 ├── config.js                  # Configuration parser
 ├── index.js                   # Main booking script
 ├── package.json              # Dependencies
-├── .env                      # Local configuration (gitignored)
+├── .env                      # Local testing only (gitignored)
 ├── .gitignore               # Git ignore rules
 └── README.md                # Documentation
 ```
@@ -592,24 +565,30 @@ Automatically extracted from curl command:
 
 ### Safe Practices
 
-- Never commit `.env` file (already in `.gitignore`)
-- Store credentials only in GitHub Secrets
-- Rotate cookies when they expire
-- Use repository secrets for sensitive data
+- Always use GitHub Secrets for credentials (never commit them)
+- GitHub Secrets are encrypted and never exposed in logs
+- Rotate curl command when cookies expire (every 7-30 days)
+- Keep your repository private if you prefer extra security
+- Never commit `.env` files or credentials to git
 
-### What Gets Committed
+### Why GitHub Secrets Are Safe
 
-Safe to commit:
+When you use GitHub Secrets:
+- Values are encrypted at rest
+- Never visible in workflow logs
+- Only accessible during workflow execution
+- Cannot be read by anyone (including you) after saving
+- Not included in forked repositories
+
+### What's In Your Repository
+
+Your forked repository contains only:
 - Source code (`index.js`, `config.js`)
-- Workflow files
+- Workflow configuration (`.github/workflows/book-class.yml`)
 - Documentation
-- Dependencies
+- Dependencies list
 
-Never commit:
-- `.env` file
-- Personal curl commands
-- Session cookies
-- Authentication tokens
+Your credentials stay in Secrets (not in code).
 
 ### Token Expiration
 
@@ -631,7 +610,7 @@ When tokens expire, update CURL_COMMAND with fresh credentials.
 
 ## Contributing
 
-Contributions welcome. Areas for improvement:
+Contributions welcome! Areas for improvement:
 
 - Waitlist monitoring and auto-rebooking when spot opens
 - Notification integrations (email, Slack, etc.)
@@ -640,11 +619,12 @@ Contributions welcome. Areas for improvement:
 
 ### Pull Request Process
 
-1. Fork repository
-2. Create feature branch
-3. Make changes with tests
-4. Update documentation
-5. Submit pull request
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Test your changes locally (see Local Testing section)
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to your fork (`git push origin feature/amazing-feature`)
+6. Open a Pull Request to this repository
 
 ## License
 
@@ -670,12 +650,50 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+## FAQ
+
+### Do I need to install anything on my computer?
+
+No! Just fork the repository on GitHub and configure secrets. Everything runs on GitHub's servers.
+
+### Is my Cult.fit login information safe?
+
+Yes! GitHub Secrets are encrypted and never exposed. They're not visible in logs or accessible to anyone else.
+
+### How much does this cost?
+
+$0. GitHub Actions provides free compute time for public repositories, and more than enough for private repos too.
+
+### Can I keep my forked repository private?
+
+Yes! The automation works the same way with private repositories. Your credentials remain secure in either case.
+
+### What if I want to change my preferences?
+
+Just update the GitHub Secrets in your repository settings. Changes take effect on the next workflow run.
+
+### How do I know if booking succeeded?
+
+Check the Actions tab in your repository. Each run shows detailed logs including booking confirmation or errors.
+
+### Do I need to update the curl command regularly?
+
+Yes, session cookies expire after 7-30 days. When you see "Login Required" errors, update the `CURL_COMMAND` secret with a fresh curl from your browser.
+
+### Can I book for multiple people?
+
+No, one repository = one Cult.fit account. Fork additional copies for other accounts (use separate GitHub accounts).
+
+### What time does the booking run?
+
+Default is 10:05 AM UTC (3:35 PM IST). You can customize this by editing the workflow file's cron schedule.
+
 ## Support
 
 For issues, questions, or feature requests:
 - Open an issue on GitHub
 - Check existing issues for solutions
-- Review troubleshooting section above
+- Review troubleshooting and FAQ sections above
 
 ## Acknowledgments
 
