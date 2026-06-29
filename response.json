@@ -1,0 +1,3539 @@
+{
+  "header": {
+    "title": "Nallagandla"
+  },
+  "classByDateMap": {
+    "2026-06-29": {
+      "id": "2026-06-29",
+      "classByTimeList": [
+        {
+          "id": "17:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049662",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 5
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049662"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8216924",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8216924"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "17:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049663",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "17:30:00",
+                  "endTime": "18:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049663"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049664",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 1
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049664"
+                  }
+                },
+                {
+                  "id": "8049665",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049665"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129694",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 9
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129694"
+                  }
+                },
+                {
+                  "id": "8176965",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8176965"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049666",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "18:30:00",
+                  "endTime": "19:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049666"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "19:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049667",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 15
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049667"
+                  }
+                },
+                {
+                  "id": "8049668",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049668"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129695",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129695"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "19:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049669",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "19:30:00",
+                  "endTime": "20:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049669"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049670",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049670"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129696",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129696"
+                  }
+                },
+                {
+                  "id": "8176966",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8176966"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049671",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "20:30:00",
+                  "endTime": "21:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049671"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "21:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049672",
+                  "productType": "FITNESS",
+                  "date": "2026-06-29",
+                  "startTime": "21:00:00",
+                  "endTime": "21:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049672"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        }
+      ],
+      "timeSlots": [
+        "17:00:00",
+        "17:30:00",
+        "18:00:00",
+        "18:30:00",
+        "19:00:00",
+        "19:30:00",
+        "20:00:00",
+        "20:30:00",
+        "21:00:00",
+        "21:30:00",
+        "22:00:00",
+        "22:30:00",
+        "23:00:00",
+        "23:30:00"
+      ]
+    },
+    "2026-06-30": {
+      "id": "2026-06-30",
+      "classByTimeList": [
+        {
+          "id": "06:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049673",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "06:00:00",
+                  "endTime": "06:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLISTED",
+                  "waitlistInfo": {
+                    "waitlistNumber": 5
+                  },
+                  "action": "curefit://cultclass?bookingNumber=WLCHNLG2GVHF9X8R&isWaitlistBooking=true",
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://cultclass?bookingNumber=WLCHNLG2GVHF9X8R&isWaitlistBooking=true"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8216926",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "06:00:00",
+                  "endTime": "06:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8216926"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "07:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049674",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 26
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049674"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129698",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_FULL",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "title": "Waitlist Full",
+                    "subTitle": "Waitlist for this class is currently full",
+                    "actionType": "SHOW_CLASS_BOOKING_ERROR_MODAL"
+                  }
+                },
+                {
+                  "id": "8129699",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129699"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "07:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049675",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "07:30:00",
+                  "endTime": "08:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049675"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "08:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049676",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "WAITLIST_FULL",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "title": "Waitlist Full",
+                    "subTitle": "Waitlist for this class is currently full",
+                    "actionType": "SHOW_CLASS_BOOKING_ERROR_MODAL"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129700",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 0,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 21
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129700"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "08:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049677",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "08:30:00",
+                  "endTime": "09:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "WAITLIST_FULL",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "title": "Waitlist Full",
+                    "subTitle": "Waitlist for this class is currently full",
+                    "actionType": "SHOW_CLASS_BOOKING_ERROR_MODAL"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "09:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049678",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_FULL",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "title": "Waitlist Full",
+                    "subTitle": "Waitlist for this class is currently full",
+                    "actionType": "SHOW_CLASS_BOOKING_ERROR_MODAL"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129701",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129701"
+                  }
+                },
+                {
+                  "id": "8129702",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 16
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129702"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "09:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049679",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "09:30:00",
+                  "endTime": "10:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049679"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "10:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049680",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "10:00:00",
+                  "endTime": "10:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049680"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129703",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "10:00:00",
+                  "endTime": "10:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129703"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "17:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049681",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 3
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049681"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129705",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129705"
+                  }
+                },
+                {
+                  "id": "8129706",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129706"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "17:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049682",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "17:30:00",
+                  "endTime": "18:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049682"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049683",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049683"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8216927",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8216927"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049684",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "18:30:00",
+                  "endTime": "19:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 2
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049684"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "19:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049685",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049685"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129709",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129709"
+                  }
+                },
+                {
+                  "id": "8142992",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8142992"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "19:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049686",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "19:30:00",
+                  "endTime": "20:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049686"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049687",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 9
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049687"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8129710",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8129710"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049688",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "20:30:00",
+                  "endTime": "21:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049688"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "21:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8049689",
+                  "productType": "FITNESS",
+                  "date": "2026-06-30",
+                  "startTime": "21:00:00",
+                  "endTime": "21:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8049689"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        }
+      ],
+      "timeSlots": [
+        "06:00:00",
+        "07:00:00",
+        "08:00:00",
+        "09:00:00",
+        "10:00:00",
+        "11:00:00",
+        "12:00:00",
+        "13:00:00",
+        "14:00:00",
+        "15:00:00",
+        "16:00:00",
+        "17:00:00",
+        "18:00:00",
+        "19:00:00",
+        "20:00:00",
+        "21:00:00",
+        "22:00:00",
+        "23:00:00"
+      ]
+    },
+    "2026-07-01": {
+      "id": "2026-07-01",
+      "classByTimeList": [
+        {
+          "id": "06:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155448",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "06:00:00",
+                  "endTime": "06:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "SEAT_NOT_AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "title": "Class Booking",
+                    "subTitle": "All slots for the class are booked",
+                    "actionType": "SHOW_CLASS_BOOKING_ERROR_MODAL"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156047",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "06:00:00",
+                  "endTime": "06:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156047"
+                  }
+                },
+                {
+                  "id": "8156048",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "06:00:00",
+                  "endTime": "06:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "SEAT_NOT_AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "title": "Class Booking",
+                    "subTitle": "All slots for the class are booked",
+                    "actionType": "SHOW_CLASS_BOOKING_ERROR_MODAL"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "06:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155449",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "06:30:00",
+                  "endTime": "07:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155449"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "07:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155450",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLISTED",
+                  "waitlistInfo": {
+                    "waitlistNumber": 4
+                  },
+                  "action": "curefit://cultclass?bookingNumber=WLCHNLG2GKHYV4H9&isWaitlistBooking=true",
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://cultclass?bookingNumber=WLCHNLG2GKHYV4H9&isWaitlistBooking=true"
+                  }
+                },
+                {
+                  "id": "8155451",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155451"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156049",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156049"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "07:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155452",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "07:30:00",
+                  "endTime": "08:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155452"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "08:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155453",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "SEAT_NOT_AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "title": "Class Booking",
+                    "subTitle": "All slots for the class are booked",
+                    "actionType": "SHOW_CLASS_BOOKING_ERROR_MODAL"
+                  }
+                },
+                {
+                  "id": "8155454",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155454"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156050",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156050"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "08:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155455",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "08:30:00",
+                  "endTime": "09:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155455"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "09:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155456",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 16
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155456"
+                  }
+                },
+                {
+                  "id": "8216039",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8216039"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156051",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 15
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156051"
+                  }
+                },
+                {
+                  "id": "8156052",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156052"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "09:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155457",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "09:30:00",
+                  "endTime": "10:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155457"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "10:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155458",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "10:00:00",
+                  "endTime": "10:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 4
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155458"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156053",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "10:00:00",
+                  "endTime": "10:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156053"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "17:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155459",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 4
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155459"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156054",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156054"
+                  }
+                },
+                {
+                  "id": "8156055",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156055"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155460",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155460"
+                  }
+                },
+                {
+                  "id": "8155461",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155461"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156056",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156056"
+                  }
+                },
+                {
+                  "id": "8156057",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156057"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155462",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "18:30:00",
+                  "endTime": "19:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155462"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "19:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155463",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 2
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155463"
+                  }
+                },
+                {
+                  "id": "8155464",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155464"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156058",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156058"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "19:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155465",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "19:30:00",
+                  "endTime": "20:20:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155465"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155466",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155466"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156059",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156059"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155467",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "20:30:00",
+                  "endTime": "21:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155467"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "21:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155468",
+                  "productType": "FITNESS",
+                  "date": "2026-07-01",
+                  "startTime": "21:00:00",
+                  "endTime": "21:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155468"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        }
+      ],
+      "timeSlots": [
+        "06:00:00",
+        "07:00:00",
+        "08:00:00",
+        "09:00:00",
+        "10:00:00",
+        "11:00:00",
+        "12:00:00",
+        "13:00:00",
+        "14:00:00",
+        "15:00:00",
+        "16:00:00",
+        "17:00:00",
+        "18:00:00",
+        "19:00:00",
+        "20:00:00",
+        "21:00:00",
+        "22:00:00",
+        "23:00:00"
+      ]
+    },
+    "2026-07-02": {
+      "id": "2026-07-02",
+      "classByTimeList": [
+        {
+          "id": "06:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155469",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "06:00:00",
+                  "endTime": "06:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 21
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155469"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156060",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "06:00:00",
+                  "endTime": "06:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156060"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "07:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155470",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLISTED",
+                  "waitlistInfo": {
+                    "waitlistNumber": 4
+                  },
+                  "action": "curefit://cultclass?bookingNumber=WLCHNLG3GSWMF8D7&isWaitlistBooking=true",
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://cultclass?bookingNumber=WLCHNLG3GSWMF8D7&isWaitlistBooking=true"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156061",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "07:00:00",
+                  "endTime": "07:50:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156061"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "07:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155471",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "07:30:00",
+                  "endTime": "08:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155471"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "08:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155472",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 22
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155472"
+                  }
+                },
+                {
+                  "id": "8155473",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155473"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156062",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156062"
+                  }
+                },
+                {
+                  "id": "8156063",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "08:00:00",
+                  "endTime": "08:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 16
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156063"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "08:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155474",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "08:30:00",
+                  "endTime": "09:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155474"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "09:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155475",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 0,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "WAITLIST_AVAILABLE",
+                  "waitlistInfo": {
+                    "waitlistedUserCount": 27
+                  },
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155475"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156064",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "09:00:00",
+                  "endTime": "09:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156064"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "09:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155476",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "09:30:00",
+                  "endTime": "10:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155476"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "10:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155477",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "10:00:00",
+                  "endTime": "10:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155477"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156065",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "10:00:00",
+                  "endTime": "10:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156065"
+                  }
+                },
+                {
+                  "id": "8156066",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "10:00:00",
+                  "endTime": "10:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156066"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "17:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155478",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155478"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156067",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "17:00:00",
+                  "endTime": "17:50:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156067"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155479",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155479"
+                  }
+                },
+                {
+                  "id": "8155480",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155480"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156068",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 66,
+                  "workoutCategoryId": 66,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BURN",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156068"
+                  }
+                },
+                {
+                  "id": "8156069",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "18:00:00",
+                  "endTime": "18:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156069"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "18:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155481",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "18:30:00",
+                  "endTime": "19:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155481"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "19:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155482",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "ADIDAS STRENGTH+",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155482"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156070",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "19:00:00",
+                  "endTime": "19:50:00",
+                  "workoutId": 5,
+                  "workoutCategoryId": 5,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "EVOLVE YOGA",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156070"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:00:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155483",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155483"
+                  }
+                }
+              ],
+              "distance": null
+            },
+            {
+              "centerId": 870,
+              "classes": [
+                {
+                  "id": "8156071",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 69,
+                  "workoutCategoryId": 69,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "HRX WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156071"
+                  }
+                },
+                {
+                  "id": "8156072",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "20:00:00",
+                  "endTime": "20:50:00",
+                  "workoutId": 8,
+                  "workoutCategoryId": 8,
+                  "isRecommendedWorkout": null,
+                  "centerID": 870,
+                  "availableSeats": 2,
+                  "workoutName": "BOXING BAG WORKOUT",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8156072"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        },
+        {
+          "id": "20:30:00",
+          "bookedCenterPosition": -1,
+          "uniqueFavouriteCenters": {},
+          "maxExpandedCenters": 3,
+          "centerWiseClasses": [
+            {
+              "centerId": 209,
+              "classes": [
+                {
+                  "id": "8155484",
+                  "productType": "FITNESS",
+                  "date": "2026-07-02",
+                  "startTime": "20:30:00",
+                  "endTime": "21:20:00",
+                  "workoutId": 56,
+                  "workoutCategoryId": 56,
+                  "isRecommendedWorkout": null,
+                  "centerID": 209,
+                  "availableSeats": 2,
+                  "workoutName": "FUSION DANCE FITNESS",
+                  "state": "AVAILABLE",
+                  "waitlistInfo": {},
+                  "cardAction": {
+                    "actionType": "NAVIGATION",
+                    "url": "curefit://prebookclass?classId=8155484"
+                  }
+                }
+              ],
+              "distance": null
+            }
+          ],
+          "isLive": false
+        }
+      ],
+      "timeSlots": [
+        "06:00:00",
+        "07:00:00",
+        "08:00:00",
+        "09:00:00",
+        "10:00:00",
+        "11:00:00",
+        "12:00:00",
+        "13:00:00",
+        "14:00:00",
+        "15:00:00",
+        "16:00:00",
+        "17:00:00",
+        "18:00:00",
+        "19:00:00",
+        "20:00:00",
+        "21:00:00",
+        "22:00:00",
+        "23:00:00"
+      ]
+    }
+  },
+  "centerInfoMap": {
+    "209": {
+      "centerName": "Cult Nallagandla ",
+      "isNew": false
+    },
+    "752": {
+      "centerName": "BHEL",
+      "isNew": false
+    },
+    "870": {
+      "centerName": "Cult Nallagandla - Huda",
+      "isNew": false
+    },
+    "-5": {
+      "centerName": "At Home",
+      "verticalName": "cultpass HOME",
+      "isNew": false
+    },
+    "-6": {
+      "centerName": "At Home",
+      "verticalName": "mind.live",
+      "isNew": false
+    },
+    "-7": {
+      "centerName": "At Home",
+      "verticalName": "eat.live",
+      "isNew": false
+    }
+  },
+  "days": [
+    {
+      "id": "2026-06-29"
+    },
+    {
+      "id": "2026-06-30"
+    },
+    {
+      "id": "2026-07-01"
+    },
+    {
+      "id": "2026-07-02"
+    }
+  ],
+  "timeSlotOptions": [
+    {
+      "slot": "morning",
+      "icon": "morning",
+      "displayText": "Morning",
+      "startTime": "06:00:00"
+    },
+    {
+      "slot": "evening",
+      "icon": "evening",
+      "displayText": "Evening",
+      "startTime": "16:00:00"
+    }
+  ],
+  "workoutCategoryFilters": [
+    {
+      "id": 56,
+      "name": "Dance",
+      "displayText": "Dance"
+    },
+    {
+      "id": 69,
+      "name": "Strength",
+      "displayText": "Strength"
+    },
+    {
+      "id": 66,
+      "name": "Burn",
+      "displayText": "Burn"
+    },
+    {
+      "id": 5,
+      "name": "Yoga",
+      "displayText": "Yoga"
+    },
+    {
+      "id": 8,
+      "name": "Boxing",
+      "displayText": "Boxing"
+    }
+  ],
+  "liveClassFormatFilter": [],
+  "nudgeDetails": [],
+  "emptyClassesMessage": "Classes aren't yet scheduled for this date. Do stay tuned.",
+  "bannerWidget": {
+    "widgetType": "BANNER_CAROUSEL_WIDGET",
+    "widgetMetric": {
+      "isWidgetImpressionRequired": true,
+      "isSampledWidgetImpressionRequired": false,
+      "widgetType": "BANNER_CAROUSEL_WIDGET",
+      "widgetId": "ed20a8af-d800-44a2-ad78-a1b1c8208245",
+      "widgetName": "Cult Schedule Page Banner Widget",
+      "widgetSegmentId": "c47f0308-73ce-4778-9fcb-be1bcaeac17c",
+      "widgetSegmentName": "cultpass Elite Members"
+    },
+    "hasDivideBelow": false,
+    "hasDividerBelow": false,
+    "hasDividerTop": false,
+    "layoutProps": {
+      "roundedCorners": false,
+      "noVerticalPadding": false,
+      "edgeToEdge": false,
+      "interContentSpacing": 0,
+      "alignment": "center",
+      "showPagination": false,
+      "v2": true,
+      "autoScroll": false,
+      "noAutoPlay": false,
+      "useShadow": false,
+      "bannerOriginalWidth": 0,
+      "bannerOriginalHeight": 0,
+      "bannerWidth": 0,
+      "bannerHeight": 0,
+      "backgroundColor": " ",
+      "tagStyle": {
+        "text": {
+          "bgColor": "#cecece",
+          "fontColor": "#cecece"
+        }
+      },
+      "ctaStyle": {
+        "text": {
+          "bgColor": "#cecece",
+          "fontColor": "#cecece"
+        }
+      },
+      "noVerticalMargin": false,
+      "horizontalMargin": 0,
+      "paddingAround": false,
+      "enableTopFade": false,
+      "enableBottomFade": false,
+      "spacing": {
+        "top": "0",
+        "bottom": "70"
+      }
+    },
+    "templateId": "cult_schedule_page_banner_template (1035x240)",
+    "maxNumBanners": 2,
+    "minNumBanners": 0,
+    "data": [
+      {
+        "segmentIds": [
+          "ced675c1-bb4e-4afc-bb4f-a0d8dcb6d5fa"
+        ],
+        "startTimeWithTz": {
+          "date": "2026-06-07T18:30:00.000+00:00",
+          "timezone": "Asia/Kolkata"
+        },
+        "contentMetric": {
+          "contentId": "xmlrf611a6",
+          "contentUrl": "/null"
+        },
+        "image": "/null",
+        "loopVideo": false,
+        "muteVideo": false,
+        "action": {
+          "url": "curefit://fl_listpage?pageId=cult_unbound_challengers&hideTitle=true",
+          "actionType": "NAVIGATION"
+        },
+        "actionV2": {
+          "userAction": "Flutter List Page - Hide & Swipe",
+          "dynamicFields": [
+            {
+              "key": "pageId",
+              "value": "cult_unbound_challengers"
+            },
+            {
+              "key": "hideTitle",
+              "value": "true"
+            }
+          ]
+        },
+        "recommendationRate": 0,
+        "dedupeLimit": 1,
+        "dedupeId": "e82zm1cn9o",
+        "priority": -5,
+        "bannerIdentifier": "unbound - HYD",
+        "bannerExperimentVersion": 0,
+        "maxNumberOfPersonalizedBanners": 0,
+        "experimentSamplePercentage": 0,
+        "pauseAutoScroll": false,
+        "ellipticalTagText": false,
+        "showFullTime": false,
+        "showDays": false
+      },
+      {
+        "segmentIds": [
+          "a98f7a08-a919-4db4-a33d-06c15ae8006a"
+        ],
+        "contentMetric": {
+          "contentId": "xxc5lacwz2",
+          "contentUrl": "/null"
+        },
+        "image": "/null",
+        "loopVideo": false,
+        "muteVideo": false,
+        "action": {
+          "url": "curefit://fl_listpage?pageId=Gym_PT&hideTitle=true",
+          "actionType": "NAVIGATION"
+        },
+        "actionV2": {
+          "userAction": "Flutter List Page - Hide & Swipe",
+          "dynamicFields": [
+            {
+              "key": "pageId",
+              "value": "Gym_PT"
+            },
+            {
+              "key": "hideTitle",
+              "value": "true"
+            }
+          ]
+        },
+        "recommendationRate": 0,
+        "dedupeLimit": 1,
+        "dedupeId": "otkibvuj73i",
+        "priority": 1,
+        "bannerIdentifier": "GymPT - Generic - Do Not Move",
+        "bannerExperimentVersion": 0,
+        "maxNumberOfPersonalizedBanners": 0,
+        "experimentSamplePercentage": 0,
+        "pauseAutoScroll": false,
+        "ellipticalTagText": false,
+        "showFullTime": false,
+        "showDays": false
+      }
+    ],
+    "bannerScrollSpeed": 3000
+  }
+}

@@ -21,11 +21,11 @@ function parseCurlCommand(curlString) {
         return match ? match[1].trim() : "";
     };
 
-    config.apiKey = extractHeader('apikey') || "9d153009-e961-4718-a343-2a36b0a1d1fd";
-    config.appVersion = extractHeader('appversion') || "7";
-    config.browserName = extractHeader('browsername') || "Chrome";
-    config.osName = extractHeader('osname') || "browser";
-    config.timezone = extractHeader('timezone') || "Asia/Kolkata";
+    config.apiKey = extractHeader('apikey');
+    config.appVersion = extractHeader('appversion');
+    config.browserName = extractHeader('browsername') ;
+    config.osName = extractHeader('osname') ;
+    config.timezone = extractHeader('timezone');
     config.userAgent = extractHeader('user-agent');
     config.referer = extractHeader('referer');
     config.authorization = extractHeader('authorization');
