@@ -6,3 +6,7 @@ config.local.js
 .DS_Store
 bun.lockb
 classes.json
+
+response.json
+get_centers.js
+check_bookings.js
