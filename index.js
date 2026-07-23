@@ -132,57 +132,56 @@ async function main() {
         }
 
         let date = classes.days[classes.days.length - 1].id;
-        
+
         console.log(`Booking for ${date}`);
         console.log(`[DEBUG] Selected target date index=${classes.days.length - 1}, date=${date}`);
         console.log(`[DEBUG] Total dates in response: ${classes.days.length}`);
-        
+
         if (!classes.classByDateMap || !classes.classByDateMap[date]) {
             console.error(`[DEBUG] classByDateMap missing entry for date=${date}`);
             throw new Error(`Classes map not found for date ${date}`);
         }
-        
+
         if (hasBookingForDate(classes.classByDateMap[date])) {
             console.log(`Already booked on ${date}. Skipping.`);
             console.log("[DEBUG] Exiting early due to existing booking");
-            return;
+            return { status: 'already_booked', date };
         }
-        
-        let slots = [];
-        console.log(`[DEBUG] Declared slots array for potential usage. Initial length=${slots.length}`);
-        
+
         let booked = false;
+        let bookedInfo = null;
         console.log("[DEBUG] Booking status initialized to false");
-        
+
         for (let slot of PREFERRED_SLOTS) {
             console.log(`[DEBUG] Checking slot ${slot}`);
             let availableClassesInSlot = getSlots(classes.classByDateMap[date], slot, PREFERRED_CLASSES_IN_ORDER);
             console.log(`[DEBUG] Slot ${slot}: ${availableClassesInSlot.length} candidate classes after filtering`);
-            
+
             for (let classInfo of availableClassesInSlot) {
                 let waitlistCount = classInfo.waitlistInfo && classInfo.waitlistInfo.waitlistedUserCount || 0;
                 console.log(`[DEBUG] Evaluating class: id=${classInfo.id}, workout=${classInfo.workoutName}, state=${classInfo.state}, availableSeats=${classInfo.availableSeats}, waitlistCount=${waitlistCount}, preference=${classInfo.preference}`);
-                
+
                 // If it's waitlist and >= 15 people are waiting, skip it and look for the next preferred class
                 if (classInfo.state === 'WAITLIST_AVAILABLE' && waitlistCount >= 15) {
                     console.log(`Skipping ${classInfo.workoutName} at ${slot} (Waitlist too long: ${waitlistCount} ahead)`);
                     console.log(`[DEBUG] Skipped class due to waitlist threshold. classId=${classInfo.id}`);
-                    continue; 
+                    continue;
                 }
-                
+
                 console.log(`Found ${classInfo.workoutName} at ${slot} on ${date}`);
-                
+
                 if (classInfo.state === 'WAITLIST_AVAILABLE') {
                     console.log(`Joining waitlist (${waitlistCount} people ahead)`);
                 } else {
                     console.log(`Booking (${classInfo.availableSeats} seats available)`);
                 }
-                
+
                 console.log(`[DEBUG] Attempting booking API call for classId=${classInfo.id}`);
                 await bookClass(classInfo.id);
                 console.log("Class booked successfully!");
                 console.log(`[DEBUG] Booking flow succeeded for classId=${classInfo.id}`);
                 booked = true;
+                bookedInfo = { workout: classInfo.workoutName, slot, date };
                 break; // Break inner loop (classes)
             }
             if (booked) {
@@ -192,20 +191,84 @@ async function main() {
 
             console.log(`[DEBUG] No booking completed in slot ${slot}. Continuing to next preferred slot.`);
         }
-        
+
         if (!booked) {
             console.log(`No matching classes (${PREFERRED_WORKOUT_NAMES.join(', ')}) with acceptable waitlist available on ${date}`);
             console.log("[DEBUG] Booking flow finished with no booking");
-        } else {
-            console.log("[DEBUG] Booking flow finished with success");
+            return { status: 'no_match', date };
         }
+
+        console.log("[DEBUG] Booking flow finished with success");
+        return { status: 'booked', ...bookedInfo };
     } catch (error) {
         console.error("[DEBUG] Error caught in main()", error);
         errorHandler(error);
+        return { status: 'error', error: error.message };
     }
 }
 
-main();
+const RETRY_INTERVAL_MS = 5000;
+const RETRY_MAX_DURATION_MS = 55000;
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Notifies via `termux-notification` when available (Termux/Android); silently
+// no-ops elsewhere (e.g. GitHub Actions runners, local dev on a laptop).
+function notify(title, message) {
+    try {
+        const { spawnSync } = require('node:child_process');
+        const result = spawnSync('termux-notification', ['--title', title, '--content', message]);
+        if (result.error) {
+            console.log("[DEBUG] termux-notification unavailable, skipping notification");
+        }
+    } catch (error) {
+        console.log("[DEBUG] Notification skipped:", error.message);
+    }
+}
+
+function buildNotification(result) {
+    switch (result.status) {
+        case 'booked':
+            return { title: 'Cultify: Class booked!', message: `${result.workout} at ${result.slot} on ${result.date}` };
+        case 'already_booked':
+            return { title: 'Cultify: Already booked', message: `Existing booking found for ${result.date}` };
+        case 'no_match':
+            return { title: 'Cultify: No class booked', message: `No matching classes available on ${result.date}` };
+        default:
+            return { title: 'Cultify: Booking failed', message: result.error || 'Unknown error' };
+    }
+}
+
+async function runWithRetry() {
+    const startedAt = Date.now();
+    let result;
+    let attempt = 1;
+
+    while (true) {
+        console.log(`[DEBUG] Booking attempt #${attempt}`);
+        result = await main();
+
+        if (result.status === 'booked' || result.status === 'already_booked') {
+            break;
+        }
+        if (Date.now() - startedAt >= RETRY_MAX_DURATION_MS) {
+            console.log(`[DEBUG] Retry window exhausted after attempt #${attempt} (status=${result.status})`);
+            break;
+        }
+
+        console.log(`[DEBUG] Retrying in ${RETRY_INTERVAL_MS}ms (status=${result.status})`);
+        await sleep(RETRY_INTERVAL_MS);
+        attempt++;
+    }
+
+    const { title, message } = buildNotification(result);
+    notify(title, message);
+    process.exitCode = (result.status === 'booked' || result.status === 'already_booked') ? 0 : 1;
+}
+
+runWithRetry();
 
 
 async function bookClass(activityID) {

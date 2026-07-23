@@ -6,6 +6,7 @@ config.local.js
 .DS_Store
 bun.lockb
 classes.json
+termux/logs/
 
 response.json
 get_centers.js
