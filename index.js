@@ -1,6 +1,5 @@
 "use strict";
 const fs = require('node:fs');
-const os = require('node:os');
 const path = require('node:path');
 const config = require('./config'),
     /*
@@ -229,7 +228,7 @@ async function main() {
 // whether to bother. This script just persists attempt count + outcome for
 // today so each separate invocation knows where it left off.
 const MAX_ATTEMPTS = 3; // initial attempt + 2 retries, ~15 min apart
-const STATE_FILE = path.join(os.homedir(), '.cultify-state.json');
+const STATE_FILE = path.join(__dirname, '.cultify-state.json');
 
 function todayDate() {
     const d = new Date();
