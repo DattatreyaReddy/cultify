@@ -78,16 +78,13 @@ const PREFERRED_CLASSES_IN_ORDER = [];
 let currentPreference = 1;
 PREFERRED_WORKOUT_NAMES.forEach(name => {
     let matches = Object.values(ActivityType).filter(activity => activity.name === name);
-    console.log(`[DEBUG] Building preference list for workout name: ${name}. Matches found: ${matches.length}`);
     matches.forEach(m => {
         let cloned = Object.assign({}, m);
         cloned.preference = currentPreference++;
         PREFERRED_CLASSES_IN_ORDER.push(cloned);
-        console.log(`[DEBUG] Added preferred class mapping: id=${cloned.id}, name=${cloned.name}, preference=${cloned.preference}`);
     });
 });
 
-console.log("[DEBUG] Script initialization complete");
 console.log(`[DEBUG] Preferred slots: ${JSON.stringify(PREFERRED_SLOTS)}`);
 console.log(`[DEBUG] Preferred center: ${PREFERRED_CENTER}`);
 console.log(`[DEBUG] Preferred workouts from config: ${JSON.stringify(PREFERRED_WORKOUT_NAMES)}`);
@@ -100,35 +97,29 @@ function logNearbyGyms(classesForDay) {
         return;
     }
 
-    const gymsById = new Map();
+    const seenIds = new Set();
     for (let timeSlot of classesForDay.classByTimeList) {
         for (let center of timeSlot.centerWiseClasses) {
-            if (!gymsById.has(center.centerId)) {
-                gymsById.set(center.centerId, center.centerName);
+            if (!seenIds.has(center.centerId)) {
+                seenIds.add(center.centerId);
+                const centerMeta = { ...center };
+                delete centerMeta.classes;
+                console.log(`[DEBUG] Center object: ${JSON.stringify(centerMeta)}`);
             }
         }
     }
-
-    console.log(`Nearby gyms (${gymsById.size}):`);
-    gymsById.forEach((name, id) => {
-        console.log(`  - ${name} (id=${id})`);
-    });
 }
 
 function hasBookingForDate(classesForDay) {
-    console.log("[DEBUG] Checking existing booking for preferred center on selected date");
     if (!classesForDay || !classesForDay.classByTimeList) {
         console.error("[DEBUG] Invalid classesForDay payload in hasBookingForDate");
         return false;
     }
 
     for (let timeSlot of classesForDay.classByTimeList) {
-        console.log(`[DEBUG] Inspecting time slot for booked classes: ${timeSlot.id}`);
         for (let centerClass of timeSlot.centerWiseClasses) {
             if (centerClass.centerId === PREFERRED_CENTER) {
-                console.log(`[DEBUG] Found preferred center ${PREFERRED_CENTER} in slot ${timeSlot.id}. Total classes: ${centerClass.classes.length}`);
                 for (let classs of centerClass.classes) {
-                    console.log(`[DEBUG] Existing class status check: classId=${classs.id}, workout=${classs.workoutName}, state=${classs.state}, isBooked=${classs.isBooked}`);
                     if (classs.state === 'BOOKED' || classs.isBooked === true) {
                         console.log(`[DEBUG] Existing booking found: classId=${classs.id}, slot=${timeSlot.id}`);
                         return true;
@@ -143,9 +134,7 @@ function hasBookingForDate(classesForDay) {
 
 async function main() {
     try {
-        console.log("[DEBUG] Starting main booking flow");
         let classes = await makeAPICall({}, CURE_FIT_HOST, URI.GET_CLASSES, HTTP_GET, commonHeaders);
-        console.log(`[DEBUG] GET_CLASSES response keys: ${Object.keys(classes || {}).join(', ')}`);
 
         if (!classes || !classes.days || classes.days.length === 0) {
             console.error("[DEBUG] Invalid classes response: missing days");
@@ -155,8 +144,6 @@ async function main() {
         let date = classes.days[classes.days.length - 1].id;
 
         console.log(`Booking for ${date}`);
-        console.log(`[DEBUG] Selected target date index=${classes.days.length - 1}, date=${date}`);
-        console.log(`[DEBUG] Total dates in response: ${classes.days.length}`);
 
         if (!classes.classByDateMap || !classes.classByDateMap[date]) {
             console.error(`[DEBUG] classByDateMap missing entry for date=${date}`);
@@ -167,13 +154,11 @@ async function main() {
 
         if (hasBookingForDate(classes.classByDateMap[date])) {
             console.log(`Already booked on ${date}. Skipping.`);
-            console.log("[DEBUG] Exiting early due to existing booking");
             return { status: 'already_booked', date };
         }
 
         let booked = false;
         let bookedInfo = null;
-        console.log("[DEBUG] Booking status initialized to false");
 
         for (let slot of PREFERRED_SLOTS) {
             console.log(`[DEBUG] Checking slot ${slot}`);
@@ -187,7 +172,6 @@ async function main() {
                 // If it's waitlist and >= 15 people are waiting, skip it and look for the next preferred class
                 if (classInfo.state === 'WAITLIST_AVAILABLE' && waitlistCount >= 15) {
                     console.log(`Skipping ${classInfo.workoutName} at ${slot} (Waitlist too long: ${waitlistCount} ahead)`);
-                    console.log(`[DEBUG] Skipped class due to waitlist threshold. classId=${classInfo.id}`);
                     continue;
                 }
 
@@ -199,32 +183,24 @@ async function main() {
                     console.log(`Booking (${classInfo.availableSeats} seats available)`);
                 }
 
-                console.log(`[DEBUG] Attempting booking API call for classId=${classInfo.id}`);
                 await bookClass(classInfo.id);
                 console.log(`Class booked successfully at ${classInfo.centerName}!`);
-                console.log(`[DEBUG] Booking flow succeeded for classId=${classInfo.id}`);
                 booked = true;
                 bookedInfo = { workout: classInfo.workoutName, slot, date, centerName: classInfo.centerName };
                 break; // Break inner loop (classes)
             }
             if (booked) {
-                console.log(`[DEBUG] Exiting slot loop after successful booking at slot ${slot}`);
                 break; // Break outer loop (slots)
             }
-
-            console.log(`[DEBUG] No booking completed in slot ${slot}. Continuing to next preferred slot.`);
         }
 
         if (!booked) {
             console.log(`No matching classes (${PREFERRED_WORKOUT_NAMES.join(', ')}) with acceptable waitlist available on ${date}`);
-            console.log("[DEBUG] Booking flow finished with no booking");
             return { status: 'no_match', date };
         }
 
-        console.log("[DEBUG] Booking flow finished with success");
         return { status: 'booked', ...bookedInfo };
     } catch (error) {
-        console.error("[DEBUG] Error caught in main()", error);
         errorHandler(error);
         return { status: 'error', error: error.message };
     }
@@ -295,30 +271,23 @@ runWithRetry();
 
 
 async function bookClass(activityID) {
-    console.log(`[DEBUG] bookClass invoked with activityID=${activityID}`);
     return await makeAPICall({}, CURE_FIT_HOST, "/api/cult/class/" + activityID + "/book", HTTP_POST, commonHeaders);
 }
 
 async function makeAPICall(request, host, path, method, headers) {
     console.log(`[DEBUG] makeAPICall called. method=${method}, host=${host}, path=${path}`);
-    console.log(`[DEBUG] Request payload: ${JSON.stringify(request)}`);
-    console.log(`[DEBUG] Initial header keys: ${Object.keys(headers || {}).join(', ')}`);
 
     if (config.userAgent) {
         headers['User-Agent'] = config.userAgent;
-        console.log("[DEBUG] Injected User-Agent header from config");
     }
     if (config.referer) {
         headers['referer'] = config.referer;
-        console.log("[DEBUG] Injected referer header from config");
     }
     if (config.authorization) {
         headers['authorization'] = config.authorization;
-        console.log("[DEBUG] Injected authorization header from config");
     }
 
     const url = `https://${host}${path}`;
-    console.log(`[DEBUG] Final request URL: ${url}`);
     const options = {
         method: method,
         headers: headers
@@ -326,10 +295,8 @@ async function makeAPICall(request, host, path, method, headers) {
 
     if (method === 'POST') {
         options.body = JSON.stringify(request);
-        console.log(`[DEBUG] Added POST body. Length=${options.body.length}`);
     }
 
-    console.log(`[DEBUG] Fetch options prepared. method=${options.method}, hasBody=${Boolean(options.body)}`);
     const response = await fetch(url, options);
     console.log(`[DEBUG] Received response. status=${response.status}, ok=${response.ok}`);
 
@@ -340,85 +307,66 @@ async function makeAPICall(request, host, path, method, headers) {
     }
 
     const contentType = response.headers.get('content-type');
-    console.log(`[DEBUG] Response content-type: ${contentType}`);
     if (contentType && contentType.includes('application/json')) {
-        console.log("[DEBUG] Parsing response as JSON");
         return await response.json();
     }
 
-    console.log("[DEBUG] Parsing response as text");
     return await response.text();
 }
 
 function getSlots(classesForDay, slot, classTypes) {
-    console.log(`[DEBUG] getSlots called for slot=${slot}, classTypesCount=${classTypes.length}`);
     if (!classesForDay || !classesForDay.classByTimeList) {
         console.error("[DEBUG] Invalid classesForDay payload in getSlots");
         return [];
     }
-    
+
     let timeSlot = classesForDay.classByTimeList.filter(function (classByTime) {
         return classByTime.id == slot;
     })[0];
-    console.log(`[DEBUG] Time slot lookup for ${slot}: ${timeSlot ? 'found' : 'not found'}`);
-    
+
     if (!timeSlot) {
-        console.log(`[DEBUG] No time slot data available for slot=${slot}`);
-        return [];
-    }
-    
-    let centerClasses = timeSlot.centerWiseClasses.filter(function (center) {
-        return center.centerId == PREFERRED_CENTER;
-    })[0];
-    console.log(`[DEBUG] Center lookup in slot ${slot} for center=${PREFERRED_CENTER}: ${centerClasses ? 'found' : 'not found'}`);
-    
-    if (!centerClasses) {
-        console.log(`[DEBUG] Preferred center ${PREFERRED_CENTER} has no classes in slot=${slot}`);
         return [];
     }
 
-    console.log(`[DEBUG] Total classes at center ${PREFERRED_CENTER} for slot ${slot}: ${centerClasses.classes.length}`);
-    
+    let centerClasses = timeSlot.centerWiseClasses.filter(function (center) {
+        return center.centerId == PREFERRED_CENTER;
+    })[0];
+
+    if (!centerClasses) {
+        return [];
+    }
+
+    const centerClassesMeta = { ...centerClasses };
+    delete centerClassesMeta.classes;
+    console.log(`[DEBUG] centerClasses object: ${JSON.stringify(centerClassesMeta)}`);
+
     let classIDs = centerClasses.classes.filter(function (classs) {
         let filterElement = classTypes.filter(function (classType) {
             return classType.id == classs.workoutId && classType.name == classs.workoutName
         })[0];
         if (!filterElement) {
-            console.log(`[DEBUG] Rejected class (not preferred): classId=${classs.id}, workoutId=${classs.workoutId}, workoutName=${classs.workoutName}, state=${classs.state}`);
             return false;
         }
         classs.preference = filterElement.preference;
         classs.centerName = centerClasses.centerName;
-        console.log(`[DEBUG] Candidate class matched preference: classId=${classs.id}, workout=${classs.workoutName}, preference=${classs.preference}, state=${classs.state}`);
-        
+
         if (ENABLE_WAITLIST) {
-            let allowed = classs.state === 'AVAILABLE' || classs.state === 'WAITLIST_AVAILABLE';
-            if (!allowed) {
-                console.log(`[DEBUG] Rejected class due to state with waitlist enabled: classId=${classs.id}, state=${classs.state}`);
-            }
-            return allowed;
+            return classs.state === 'AVAILABLE' || classs.state === 'WAITLIST_AVAILABLE';
         } else {
-            let allowed = classs.state === 'AVAILABLE';
-            if (!allowed) {
-                console.log(`[DEBUG] Rejected class due to state with waitlist disabled: classId=${classs.id}, state=${classs.state}`);
-            }
-            return allowed;
+            return classs.state === 'AVAILABLE';
         }
     })
     .sort(function (class1, class2) {
-        console.log(`[DEBUG] Sorting classes by preference: class1=${class1.id}(${class1.preference}), class2=${class2.id}(${class2.preference})`);
         return class1.preference - class2.preference;
     });
 
-    console.log(`[DEBUG] getSlots result for slot=${slot}: ${classIDs.length} classes`);
     classIDs.forEach(function (classs, index) {
         console.log(`[DEBUG] Result[${index}] classId=${classs.id}, workout=${classs.workoutName}, state=${classs.state}, preference=${classs.preference}, seats=${classs.availableSeats}`);
     });
-    
+
     return classIDs;
 }
 
 function errorHandler(error) {
-    console.error("[DEBUG] errorHandler invoked");
     console.error("Booking failed:", error);
 }
