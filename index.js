@@ -135,6 +135,7 @@ function hasBookingForDate(classesForDay) {
 async function main() {
     try {
         let classes = await makeAPICall({}, CURE_FIT_HOST, URI.GET_CLASSES, HTTP_GET, commonHeaders);
+        console.log(`[DEBUG] Top-level classes response keys: ${Object.keys(classes || {}).join(', ')}`);
 
         if (!classes || !classes.days || classes.days.length === 0) {
             console.error("[DEBUG] Invalid classes response: missing days");
