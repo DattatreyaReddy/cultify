@@ -9,7 +9,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./schedule.conf
 source "$DIR/schedule.conf"
 
-STATE_FILE="$HOME/.cultify-state.json"
+STATE_FILE="$DIR/../.cultify-state.json"
 TODAY="$(date +%F)"
 
 if [ -f "$STATE_FILE" ]; then
