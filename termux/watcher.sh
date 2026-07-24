@@ -1,17 +1,29 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Invoked every ~15 min by termux-job-scheduler (see setup.sh). Cheap no-op
-# outside the target window; runs the booking flow once per day inside it.
+# outside the target window; otherwise runs the booking flow, which persists
+# its own attempt/done state (see STATE_FILE in index.js) so this script just
+# defers to that instead of tracking "done for today" itself.
 set -uo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=./schedule.conf
 source "$DIR/schedule.conf"
 
-MARKER_FILE="$HOME/.cultify-last-run"
+STATE_FILE="$HOME/.cultify-state.json"
 TODAY="$(date +%F)"
 
-if [ -f "$MARKER_FILE" ] && [ "$(cat "$MARKER_FILE")" = "$TODAY" ]; then
-    exit 0
+if [ -f "$STATE_FILE" ]; then
+    DONE="$(node -e "
+        try {
+            const s = require('$STATE_FILE');
+            console.log(s.date === '$TODAY' && s.done ? 'yes' : 'no');
+        } catch (e) {
+            console.log('no');
+        }
+    ")"
+    if [ "$DONE" = "yes" ]; then
+        exit 0
+    fi
 fi
 
 TARGET_HOUR="${TARGET_TIME%%:*}"
@@ -25,5 +37,4 @@ if [ "$NOW_MINUTES" -lt "$TARGET_MINUTES" ] || [ "$NOW_MINUTES" -ge "$WINDOW_END
     exit 0
 fi
 
-echo "$TODAY" > "$MARKER_FILE"
 "$DIR/run-booking.sh"
