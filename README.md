@@ -12,9 +12,9 @@ Cultify books fitness classes at Cult.fit centers automatically, right when the 
 
 - Automatic class booking based on your preferences (center, time slots, workout type)
 - Smart booking logic (skips if already booked that day)
-- Waitlist support (joins the queue when a class is full, skips overly long waitlists)
-- Retry burst around the trigger window to absorb transient network/API blips
-- Local Android notification with the result (booked / already booked / no match / error)
+- Waitlist support (joins the queue when a class is full, skips overly long waitlists — counts as a successful outcome)
+- Retries automatically on the next JobScheduler check (~15 min later) if nothing matched or a request failed, up to 3 attempts per day
+- Local, clickable Android notification with the result (booked / already booked / no match / error) — tapping it opens the class in the Cult.fit app
 - Runs entirely on-device — no server, no CI queue, no external costs
 
 ## How It Works
@@ -24,8 +24,8 @@ Cultify books fitness classes at Cult.fit centers automatically, right when the 
 3. Filters by your configured preferences (center, time, workout type)
 4. Checks for an existing booking on the target date — skips if found
 5. Books the first available matching class (or joins a short-enough waitlist)
-6. Retries for up to ~55s if nothing matched or a request failed
-7. Sends an Android notification with the outcome
+6. If nothing matched or a request failed, persists attempt state to `.cultify-state.json` (repo root) so the next JobScheduler check (~15 min later) retries automatically — up to 3 attempts/day total
+7. Sends a clickable Android notification with the outcome (tapping it opens the class in the Cult.fit app)
 8. Logs everything to `termux/logs/`
 
 ## Prerequisites
@@ -62,7 +62,7 @@ Edit `.env` and set `CURL_COMMAND` to the curl string from step 1. Adjust `PREFE
 bash termux/setup.sh
 ```
 
-This installs Node.js, registers the daily JobScheduler job (checks in every ~15 min, only actually books inside your configured window), and wires up a boot script so the job survives a phone reboot.
+This installs Node.js, registers the daily JobScheduler job (checks in every ~15 min; inside your configured window it runs the booking flow, retrying on subsequent checks — up to 3 attempts total — until it succeeds or the window closes), and wires up a boot script so the job survives a phone reboot.
 
 It prints two things you must do manually (Android doesn't allow scripting these):
 
@@ -75,7 +75,7 @@ Edit `termux/schedule.conf`:
 
 ```bash
 TARGET_TIME="22:00"   # 24h HH:MM, local phone time
-WINDOW_MINUTES=15      # keep >= the JobScheduler tick interval (15 min)
+WINDOW_MINUTES=60      # must cover 3 attempts, ~15 min apart: (MAX_ATTEMPTS - 1) * 15 + 15
 ```
 
 Cult.fit typically opens next-day booking in the evening — set `TARGET_TIME` to just before that.
@@ -86,16 +86,22 @@ Cult.fit typically opens next-day booking in the evening — set `TARGET_TIME` t
 node index.js
 ```
 
-Runs the booking flow once immediately (with the same retry burst and notification), useful for testing your `.env` and preferences before relying on the scheduled job.
+Runs the booking flow once immediately (with the same notification), useful for testing your `.env` and preferences before relying on the scheduled job.
+
+Note: this respects the same persisted state as the scheduled job (see below) — if today is already marked done in `.cultify-state.json` (repo root), a manual run will just log that and exit. Delete that file (or wait for the next day) to force a fresh attempt.
 
 ## Checking results
 
 Everything is logged to `termux/logs/<date>.log` (auto-pruned after 30 days), and you'll get an Android notification either way:
 
-- **Cultify: Class booked!** — booked or joined a waitlist successfully
-- **Cultify: Already booked** — you already had a booking for that date
-- **Cultify: No class booked** — nothing matched your preferences within the retry window
-- **Cultify: Booking failed** — an error occurred (check the log for details)
+- **Cultify: Class booked!** — booked or joined a waitlist successfully (tap to open the class in the Cult.fit app)
+- **Cultify: Already booked** — you already had a booking for that date (also tappable)
+- **Cultify: No class booked** — nothing matched your preferences; retries automatically on the next JobScheduler check unless attempts are exhausted
+- **Cultify: Booking failed** — an error occurred (check the log for details); also retries automatically unless attempts are exhausted
+
+### Retry state
+
+Each invocation reads/writes `.cultify-state.json` (repo root) — `{ date, attempts, done }`. `watcher.sh` uses `done` to decide whether to bother running the booking flow on a given JobScheduler tick, and `index.js` uses `attempts` to know when to stop retrying (`MAX_ATTEMPTS = 3` per day, defined in `index.js`). The file resets automatically once the date changes.
 
 ## Configuration Reference
 
@@ -110,7 +116,7 @@ Everything is logged to `termux/logs/<date>.log` (auto-pruned after 30 days), an
 
 ### Finding your center ID
 
-Run `node index.js` once with any `PREFERRED_CENTER` — the debug logs print the full classes response, which includes center IDs and names.
+Run `node index.js` once with any `PREFERRED_CENTER` — it logs a "Nearby gyms" list with each center's name and ID.
 
 ### Available workout names
 
@@ -134,7 +140,7 @@ Run `node index.js` once with any `PREFERRED_CENTER` — the debug logs print th
 
 ## Limitations
 
-- Single booking attempt per day (by design)
+- Up to 3 booking attempts per day (by design), spaced by JobScheduler ticks (~15 min apart, not a guaranteed exact interval)
 - Requires an active Cult.fit membership and a phone that stays on/connected around the target time
 - Session cookies need periodic manual refresh (7-30 days)
 - Waitlist position/confirmation is determined by Cult.fit, not this script
