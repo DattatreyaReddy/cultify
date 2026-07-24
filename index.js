@@ -1,4 +1,7 @@
 "use strict";
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const config = require('./config'),
     /*
     Maintaining a list of activities and my preference
@@ -220,11 +223,33 @@ async function main() {
     }
 }
 
-const RETRY_INTERVAL_MS = 15000;
-const RETRY_MAX_DURATION_MS = 55000;
+// Attempts/retries are driven externally: watcher.sh invokes this script on
+// every ~15 min JobScheduler tick within the booking window (see
+// termux/schedule.conf) and defers to STATE_FILE's `done` flag to know
+// whether to bother. This script just persists attempt count + outcome for
+// today so each separate invocation knows where it left off.
+const MAX_ATTEMPTS = 3; // initial attempt + 2 retries, ~15 min apart
+const STATE_FILE = path.join(os.homedir(), '.cultify-state.json');
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+function todayDate() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function loadState() {
+    try {
+        return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+    } catch {
+        return null;
+    }
+}
+
+function saveState(state) {
+    try {
+        fs.writeFileSync(STATE_FILE, JSON.stringify(state));
+    } catch (error) {
+        console.log("[DEBUG] Failed to persist state:", error.message);
+    }
 }
 
 // Notifies via `termux-notification` when available (Termux/Android); silently
@@ -245,49 +270,51 @@ function notify(title, message, actionUrl) {
     }
 }
 
-function buildNotification(result) {
+function buildNotification(result, retryNote) {
     switch (result.status) {
         case 'booked':
             return { title: 'Cultify: Class booked!', message: `${result.workout} at ${result.centerName} on ${result.date} (${result.slot})`, actionUrl: result.actionUrl };
         case 'already_booked':
             return { title: 'Cultify: Already booked', message: `${result.workout} at ${result.centerName} on ${result.date} (${result.slot})`, actionUrl: result.actionUrl };
         case 'no_match':
-            return { title: 'Cultify: No class booked', message: `No matching classes (${PREFERRED_WORKOUT_NAMES.join(', ')}) with acceptable waitlist available on ${result.date}` };
+            return { title: 'Cultify: No class booked', message: `No matching classes (${PREFERRED_WORKOUT_NAMES.join(', ')}) with acceptable waitlist available on ${result.date}.${retryNote}` };
         default: {
             const dateSuffix = result.date ? ` (date=${result.date})` : '';
-            return { title: 'Cultify: Booking failed', message: `${result.error || 'Unknown error'}${dateSuffix}` };
+            return { title: 'Cultify: Booking failed', message: `${result.error || 'Unknown error'}${dateSuffix}.${retryNote}` };
         }
     }
 }
 
-async function runWithRetry() {
-    const startedAt = Date.now();
-    let result;
-    let attempt = 1;
-
-    while (true) {
-        console.log(`[DEBUG] Booking attempt #${attempt}`);
-        result = await main();
-
-        if (result.status === 'booked' || result.status === 'already_booked') {
-            break;
-        }
-        if (Date.now() - startedAt >= RETRY_MAX_DURATION_MS) {
-            console.log(`[DEBUG] Retry window exhausted after attempt #${attempt} (status=${result.status})`);
-            break;
-        }
-
-        console.log(`[DEBUG] Retrying in ${RETRY_INTERVAL_MS}ms (status=${result.status})`);
-        await sleep(RETRY_INTERVAL_MS);
-        attempt++;
+async function run() {
+    const today = todayDate();
+    let state = loadState();
+    if (state?.date !== today) {
+        state = { date: today, attempts: 0, done: false };
     }
 
-    const { title, message, actionUrl } = buildNotification(result);
+    if (state.done) {
+        console.log(`[DEBUG] Already finished for ${today} (attempts=${state.attempts}). Skipping.`);
+        return;
+    }
+
+    state.attempts += 1;
+    console.log(`[DEBUG] Booking attempt #${state.attempts}/${MAX_ATTEMPTS} for ${today}`);
+    const result = await main();
+
+    const succeeded = result.status === 'booked' || result.status === 'already_booked';
+    state.done = succeeded || state.attempts >= MAX_ATTEMPTS;
+    saveState(state);
+
+    let retryNote = '';
+    if (!succeeded) {
+        retryNote = state.done ? ' Giving up for today.' : ' Will retry on the next check.';
+    }
+    const { title, message, actionUrl } = buildNotification(result, retryNote);
     notify(title, message, actionUrl);
-    process.exitCode = (result.status === 'booked' || result.status === 'already_booked') ? 0 : 1;
+    process.exitCode = succeeded ? 0 : 1;
 }
 
-runWithRetry();
+run();
 
 
 async function bookClass(activityID) {
