@@ -115,7 +115,7 @@ function logNearbyGyms(classesForDay, centerInfoMap) {
 function hasBookingForDate(classesForDay) {
     if (!classesForDay || !classesForDay.classByTimeList) {
         console.error("[DEBUG] Invalid classesForDay payload in hasBookingForDate");
-        return false;
+        return null;
     }
 
     for (let timeSlot of classesForDay.classByTimeList) {
@@ -124,14 +124,14 @@ function hasBookingForDate(classesForDay) {
                 for (let classs of centerClass.classes) {
                     if (classs.state === 'BOOKED' || classs.isBooked === true) {
                         console.log(`[DEBUG] Existing booking found: classId=${classs.id}, slot=${timeSlot.id}`);
-                        return true;
+                        return { classs, centerId: centerClass.centerId, slot: timeSlot.id };
                     }
                 }
             }
         }
     }
     console.log("[DEBUG] No existing booking found for selected date and preferred center");
-    return false;
+    return null;
 }
 
 async function main() {
@@ -156,9 +156,17 @@ async function main() {
         console.log("Nearby gyms:");
         logNearbyGyms(classes.classByDateMap[date], centerInfoMap);
 
-        if (hasBookingForDate(classes.classByDateMap[date])) {
+        const existingBooking = hasBookingForDate(classes.classByDateMap[date]);
+        if (existingBooking) {
             console.log(`Already booked on ${date}. Skipping.`);
-            return { status: 'already_booked', date };
+            return {
+                status: 'already_booked',
+                date,
+                workout: existingBooking.classs.workoutName,
+                centerName: getCenterName(centerInfoMap, existingBooking.centerId) || 'Unknown',
+                slot: existingBooking.slot,
+                actionUrl: existingBooking.classs.action || existingBooking.classs.cardAction?.url
+            };
         }
 
         let booked = false;
@@ -191,8 +199,7 @@ async function main() {
                 console.log(`[DEBUG] Book response: ${JSON.stringify(bookResponse)}`);
                 console.log(`Class booked successfully at ${classInfo.centerName}!`);
                 booked = true;
-                let actionUrl = (bookResponse && (bookResponse.action || bookResponse.cardAction?.url))
-                    || classInfo.cardAction?.url;
+                let actionUrl = bookResponse?.body?.action || bookResponse?.action || classInfo.cardAction?.url;
                 bookedInfo = { workout: classInfo.workoutName, slot, date, centerName: classInfo.centerName, actionUrl };
                 break; // Break inner loop (classes)
             }
@@ -243,11 +250,13 @@ function buildNotification(result) {
         case 'booked':
             return { title: 'Cultify: Class booked!', message: `${result.workout} at ${result.centerName} on ${result.date} (${result.slot})`, actionUrl: result.actionUrl };
         case 'already_booked':
-            return { title: 'Cultify: Already booked', message: `Existing booking found for ${result.date}` };
+            return { title: 'Cultify: Already booked', message: `${result.workout} at ${result.centerName} on ${result.date} (${result.slot})`, actionUrl: result.actionUrl };
         case 'no_match':
-            return { title: 'Cultify: No class booked', message: `No matching classes available on ${result.date}` };
-        default:
-            return { title: 'Cultify: Booking failed', message: result.error || 'Unknown error' };
+            return { title: 'Cultify: No class booked', message: `No matching classes (${PREFERRED_WORKOUT_NAMES.join(', ')}) with acceptable waitlist available on ${result.date}` };
+        default: {
+            const dateSuffix = result.date ? ` (date=${result.date})` : '';
+            return { title: 'Cultify: Booking failed', message: `${result.error || 'Unknown error'}${dateSuffix}` };
+        }
     }
 }
 
