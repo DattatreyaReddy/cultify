@@ -94,6 +94,27 @@ console.log(`[DEBUG] Preferred workouts from config: ${JSON.stringify(PREFERRED_
 console.log(`[DEBUG] Enable waitlist: ${ENABLE_WAITLIST}`);
 console.log(`[DEBUG] Final ordered preferred classes: ${JSON.stringify(PREFERRED_CLASSES_IN_ORDER)}`);
 
+function logNearbyGyms(classesForDay) {
+    if (!classesForDay || !classesForDay.classByTimeList) {
+        console.error("[DEBUG] Invalid classesForDay payload in logNearbyGyms");
+        return;
+    }
+
+    const gymsById = new Map();
+    for (let timeSlot of classesForDay.classByTimeList) {
+        for (let center of timeSlot.centerWiseClasses) {
+            if (!gymsById.has(center.centerId)) {
+                gymsById.set(center.centerId, center.centerName);
+            }
+        }
+    }
+
+    console.log(`Nearby gyms (${gymsById.size}):`);
+    gymsById.forEach((name, id) => {
+        console.log(`  - ${name} (id=${id})`);
+    });
+}
+
 function hasBookingForDate(classesForDay) {
     console.log("[DEBUG] Checking existing booking for preferred center on selected date");
     if (!classesForDay || !classesForDay.classByTimeList) {
@@ -142,6 +163,8 @@ async function main() {
             throw new Error(`Classes map not found for date ${date}`);
         }
 
+        logNearbyGyms(classes.classByDateMap[date]);
+
         if (hasBookingForDate(classes.classByDateMap[date])) {
             console.log(`Already booked on ${date}. Skipping.`);
             console.log("[DEBUG] Exiting early due to existing booking");
@@ -168,7 +191,7 @@ async function main() {
                     continue;
                 }
 
-                console.log(`Found ${classInfo.workoutName} at ${slot} on ${date}`);
+                console.log(`Found ${classInfo.workoutName} at ${slot} on ${date} at ${classInfo.centerName}`);
 
                 if (classInfo.state === 'WAITLIST_AVAILABLE') {
                     console.log(`Joining waitlist (${waitlistCount} people ahead)`);
@@ -178,10 +201,10 @@ async function main() {
 
                 console.log(`[DEBUG] Attempting booking API call for classId=${classInfo.id}`);
                 await bookClass(classInfo.id);
-                console.log("Class booked successfully!");
+                console.log(`Class booked successfully at ${classInfo.centerName}!`);
                 console.log(`[DEBUG] Booking flow succeeded for classId=${classInfo.id}`);
                 booked = true;
-                bookedInfo = { workout: classInfo.workoutName, slot, date };
+                bookedInfo = { workout: classInfo.workoutName, slot, date, centerName: classInfo.centerName };
                 break; // Break inner loop (classes)
             }
             if (booked) {
@@ -207,7 +230,7 @@ async function main() {
     }
 }
 
-const RETRY_INTERVAL_MS = 5000;
+const RETRY_INTERVAL_MS = 15000;
 const RETRY_MAX_DURATION_MS = 55000;
 
 function sleep(ms) {
@@ -365,6 +388,7 @@ function getSlots(classesForDay, slot, classTypes) {
             return false;
         }
         classs.preference = filterElement.preference;
+        classs.centerName = centerClasses.centerName;
         console.log(`[DEBUG] Candidate class matched preference: classId=${classs.id}, workout=${classs.workoutName}, preference=${classs.preference}, state=${classs.state}`);
         
         if (ENABLE_WAITLIST) {
