@@ -91,8 +91,12 @@ console.log(`[DEBUG] Preferred workouts from config: ${JSON.stringify(PREFERRED_
 console.log(`[DEBUG] Enable waitlist: ${ENABLE_WAITLIST}`);
 console.log(`[DEBUG] Final ordered preferred classes: ${JSON.stringify(PREFERRED_CLASSES_IN_ORDER)}`);
 
-function logNearbyGyms(classesForDay) {
-    if (!classesForDay || !classesForDay.classByTimeList) {
+function getCenterName(centerInfoMap, centerId) {
+    return centerInfoMap?.[centerId]?.centerName;
+}
+
+function logNearbyGyms(classesForDay, centerInfoMap) {
+    if (!classesForDay?.classByTimeList) {
         console.error("[DEBUG] Invalid classesForDay payload in logNearbyGyms");
         return;
     }
@@ -102,9 +106,7 @@ function logNearbyGyms(classesForDay) {
         for (let center of timeSlot.centerWiseClasses) {
             if (!seenIds.has(center.centerId)) {
                 seenIds.add(center.centerId);
-                const centerMeta = { ...center };
-                delete centerMeta.classes;
-                console.log(`[DEBUG] Center object: ${JSON.stringify(centerMeta)}`);
+                console.log(`  - ${getCenterName(centerInfoMap, center.centerId) || 'Unknown'} (id=${center.centerId})`);
             }
         }
     }
@@ -135,7 +137,6 @@ function hasBookingForDate(classesForDay) {
 async function main() {
     try {
         let classes = await makeAPICall({}, CURE_FIT_HOST, URI.GET_CLASSES, HTTP_GET, commonHeaders);
-        console.log(`[DEBUG] Full classes response: ${JSON.stringify(classes)}`);
 
         if (!classes || !classes.days || classes.days.length === 0) {
             console.error("[DEBUG] Invalid classes response: missing days");
@@ -151,7 +152,9 @@ async function main() {
             throw new Error(`Classes map not found for date ${date}`);
         }
 
-        logNearbyGyms(classes.classByDateMap[date]);
+        const centerInfoMap = classes.centerInfoMap;
+        console.log("Nearby gyms:");
+        logNearbyGyms(classes.classByDateMap[date], centerInfoMap);
 
         if (hasBookingForDate(classes.classByDateMap[date])) {
             console.log(`Already booked on ${date}. Skipping.`);
@@ -163,7 +166,7 @@ async function main() {
 
         for (let slot of PREFERRED_SLOTS) {
             console.log(`[DEBUG] Checking slot ${slot}`);
-            let availableClassesInSlot = getSlots(classes.classByDateMap[date], slot, PREFERRED_CLASSES_IN_ORDER);
+            let availableClassesInSlot = getSlots(classes.classByDateMap[date], slot, PREFERRED_CLASSES_IN_ORDER, centerInfoMap);
             console.log(`[DEBUG] Slot ${slot}: ${availableClassesInSlot.length} candidate classes after filtering`);
 
             for (let classInfo of availableClassesInSlot) {
@@ -184,10 +187,13 @@ async function main() {
                     console.log(`Booking (${classInfo.availableSeats} seats available)`);
                 }
 
-                await bookClass(classInfo.id);
+                let bookResponse = await bookClass(classInfo.id);
+                console.log(`[DEBUG] Book response: ${JSON.stringify(bookResponse)}`);
                 console.log(`Class booked successfully at ${classInfo.centerName}!`);
                 booked = true;
-                bookedInfo = { workout: classInfo.workoutName, slot, date, centerName: classInfo.centerName };
+                let actionUrl = (bookResponse && (bookResponse.action || bookResponse.cardAction?.url))
+                    || classInfo.cardAction?.url;
+                bookedInfo = { workout: classInfo.workoutName, slot, date, centerName: classInfo.centerName, actionUrl };
                 break; // Break inner loop (classes)
             }
             if (booked) {
@@ -216,10 +222,14 @@ function sleep(ms) {
 
 // Notifies via `termux-notification` when available (Termux/Android); silently
 // no-ops elsewhere (e.g. GitHub Actions runners, local dev on a laptop).
-function notify(title, message) {
+function notify(title, message, actionUrl) {
     try {
         const { spawnSync } = require('node:child_process');
-        const result = spawnSync('termux-notification', ['--title', title, '--content', message]);
+        const args = ['--title', title, '--content', message];
+        if (actionUrl) {
+            args.push('--action', `termux-open-url '${actionUrl}'`);
+        }
+        const result = spawnSync('termux-notification', args);
         if (result.error) {
             console.log("[DEBUG] termux-notification unavailable, skipping notification");
         }
@@ -231,7 +241,7 @@ function notify(title, message) {
 function buildNotification(result) {
     switch (result.status) {
         case 'booked':
-            return { title: 'Cultify: Class booked!', message: `${result.workout} at ${result.slot} on ${result.date}` };
+            return { title: 'Cultify: Class booked!', message: `${result.workout} at ${result.centerName} on ${result.date} (${result.slot})`, actionUrl: result.actionUrl };
         case 'already_booked':
             return { title: 'Cultify: Already booked', message: `Existing booking found for ${result.date}` };
         case 'no_match':
@@ -263,8 +273,8 @@ async function runWithRetry() {
         attempt++;
     }
 
-    const { title, message } = buildNotification(result);
-    notify(title, message);
+    const { title, message, actionUrl } = buildNotification(result);
+    notify(title, message, actionUrl);
     process.exitCode = (result.status === 'booked' || result.status === 'already_booked') ? 0 : 1;
 }
 
@@ -315,7 +325,7 @@ async function makeAPICall(request, host, path, method, headers) {
     return await response.text();
 }
 
-function getSlots(classesForDay, slot, classTypes) {
+function getSlots(classesForDay, slot, classTypes, centerInfoMap) {
     if (!classesForDay || !classesForDay.classByTimeList) {
         console.error("[DEBUG] Invalid classesForDay payload in getSlots");
         return [];
@@ -337,10 +347,6 @@ function getSlots(classesForDay, slot, classTypes) {
         return [];
     }
 
-    const centerClassesMeta = { ...centerClasses };
-    delete centerClassesMeta.classes;
-    console.log(`[DEBUG] centerClasses object: ${JSON.stringify(centerClassesMeta)}`);
-
     let classIDs = centerClasses.classes.filter(function (classs) {
         let filterElement = classTypes.filter(function (classType) {
             return classType.id == classs.workoutId && classType.name == classs.workoutName
@@ -349,7 +355,7 @@ function getSlots(classesForDay, slot, classTypes) {
             return false;
         }
         classs.preference = filterElement.preference;
-        classs.centerName = centerClasses.centerName;
+        classs.centerName = getCenterName(centerInfoMap, classs.centerID) || 'Unknown';
 
         if (ENABLE_WAITLIST) {
             return classs.state === 'AVAILABLE' || classs.state === 'WAITLIST_AVAILABLE';
