@@ -23,6 +23,9 @@ npm install --omit=dev
 echo "==> Making scripts executable..."
 chmod +x "$REPO_DIR/termux/"*.sh
 
+echo "==> Cleaning up removed session-share integration..."
+bash "$REPO_DIR/termux/cleanup-session-share.sh"
+
 echo "==> Running versioned migrations..."
 node "$REPO_DIR/scripts/ensure-user-schedule.js"
 node "$REPO_DIR/scripts/run-migrations.js" "$APPLIED" "$TARGET"
@@ -43,9 +46,6 @@ echo "==> Upgrade complete. Now at $TARGET"
 echo
 echo "Next:"
 echo "  - Review schedule.local.yml config entries."
-echo "  - Firefox users: regenerate and replace the saved bookmarklet URL once:"
-echo "    bash termux/create-bookmarklet.sh"
-echo "    Then run the bookmarklet in Firefox and import from Termux with:"
+echo "  - If your Cult.fit session expired, capture a fresh request as cURL and import it:"
 echo "    bash termux/paste-session.sh"
-echo "    Chrome users can continue using Share -> Termux."
 echo "See CHANGELOG.md for details."

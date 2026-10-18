@@ -42,24 +42,9 @@ echo "==> Installing automatic post-pull upgrade hooks..."
 bash "$REPO_DIR/scripts/install-git-hooks.sh"
 
 chmod +x "$REPO_DIR/termux/watcher.sh" "$REPO_DIR/termux/run-booking.sh" \
-    "$REPO_DIR/termux/url-opener.sh" "$REPO_DIR/termux/paste-session.sh" \
-    "$REPO_DIR/termux/create-bookmarklet.sh"
+    "$REPO_DIR/termux/paste-session.sh"
 
-echo "==> Installing Termux share handler (termux-url-opener)..."
-mkdir -p "$HOME/bin"
-OPENER="$HOME/bin/termux-url-opener"
-PREV="$HOME/bin/termux-url-opener.cultify-prev"
-if [ -e "$OPENER" ] && ! grep -q 'cultify-url-opener' "$OPENER" 2>/dev/null; then
-    mv "$OPENER" "$PREV"
-    echo "    Existing termux-url-opener saved as $PREV"
-fi
-cat > "$OPENER" <<EOF
-#!$PREFIX/bin/bash
-# cultify-url-opener
-export CULTIFY_PREV_OPENER="$PREV"
-exec bash "$REPO_DIR/termux/url-opener.sh" "\$@"
-EOF
-chmod +x "$OPENER"
+bash "$REPO_DIR/termux/cleanup-session-share.sh"
 
 echo "==> Registering JobScheduler job (every $((PERIOD_MS / 60000)) min)..."
 termux-job-scheduler \
@@ -98,7 +83,8 @@ cat <<'EOF'
 Copy your .env (see .env.example) into this repo and edit schedule.local.yml
 before the next scheduled run. The tracked schedule.yml is the starter template.
 
-To refresh an expired session: log in at https://next.cult.fit, run the
-bookmarklet (see README), and share to Termux. Or paste a curl into:
+To refresh an expired session: log in at https://next.cult.fit, copy a fresh
+Cult.fit request as cURL, then paste it into Termux with:
   bash termux/paste-session.sh
+See README.md for details.
 EOF

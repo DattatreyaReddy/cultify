@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Fallback when the bookmarklet cannot read HttpOnly cookies: paste a curl or
-# Cookie header from the clipboard, or type it into a Termux dialog.
+# Paste a Cult.fit cURL command or Cookie header from the clipboard or dialog.
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

@@ -77,12 +77,8 @@ function extractCookiesFromCurl(curlString) {
     return cookieMatchB ? cookieMatchB[1] : '';
 }
 
-function stripPayloadPrefix(text) {
-    return String(text || '').replace(/^\s*cultify-session:v1\s*/i, '').trim();
-}
-
 function cookiesFromPayload(text) {
-    let raw = stripPayloadPrefix(text);
+    let raw = String(text || '').trim();
     if (!raw) {
         return new Map();
     }
@@ -102,9 +98,6 @@ function isSessionPayload(text) {
     const raw = String(text || '').trim();
     if (!raw) {
         return false;
-    }
-    if (/^cultify-session:v1/i.test(raw)) {
-        return true;
     }
     if (/^\s*curl\s+/i.test(raw) && /cult\.fit/i.test(raw)) {
         return true;
@@ -182,7 +175,7 @@ function saveSession({ cookies, authorization }, filePath = SESSION_FILE) {
 function importSessionPayload(text, filePath = SESSION_FILE) {
     const map = extractSessionCookies(cookiesFromPayload(text));
     if (!hasAtAndSt(map)) {
-        throw new Error('Session payload is missing at/st cookies. Log in on next.cult.fit and share or paste a curl / Cookie header.');
+        throw new Error('Session payload is missing at/st cookies. Log in on next.cult.fit and paste a Cult.fit cURL command or Cookie header.');
     }
     const cookies = cookieMapToString(map);
     saveSession({ cookies }, filePath);

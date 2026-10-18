@@ -83,11 +83,7 @@ if (process.env.CURL_COMMAND) {
         "No Cult.fit session found.\n\n" +
         `No imported session was found at ${session.sessionFilePath()}.\n` +
         "Setup does not sign in or import browser cookies.\n\n" +
-        "Browser login (recommended)\n" +
-        "  1. Create the bookmarklet once: bash termux/create-bookmarklet.sh\n" +
-        "  2. Sign in at https://next.cult.fit and run the saved Cultify bookmarklet.\n" +
-        "  3. Choose Share -> Termux and confirm the session was saved.\n\n" +
-        "Import a curl or Cookie header\n" +
+        "Import a current Cult.fit cURL or Cookie header\n" +
         "  Run: bash termux/paste-session.sh\n\n" +
         "Alternatively, set CURL_COMMAND or COOKIES in .env. See README.md for details."
     );

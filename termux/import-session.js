@@ -16,15 +16,7 @@ function notify(title, message) {
 }
 
 function readPayload() {
-    if (process.argv.includes('--clipboard')) {
-        const result = spawnSync('termux-clipboard-get', { encoding: 'utf8' });
-        if (result.error || result.status !== 0) {
-            throw new Error('Could not read the clipboard. Install Termux:API or paste a curl instead.');
-        }
-        return result.stdout || '';
-    }
-
-    const rest = process.argv.slice(2).filter(arg => arg !== '--maybe' && arg !== '--clipboard');
+    const rest = process.argv.slice(2);
     if (rest.length > 0) {
         return rest.join(' ');
     }
@@ -37,15 +29,10 @@ function readPayload() {
 }
 
 function main() {
-    const maybe = process.argv.includes('--maybe');
     const payload = readPayload();
 
-    if (maybe && !session.isSessionPayload(payload)) {
-        process.exit(2);
-    }
-
     if (!payload.trim()) {
-        throw new Error('No session payload. Share from the bookmarklet, or paste a cult.fit curl / Cookie header.');
+        throw new Error('No session payload. Paste a Cult.fit cURL command or Cookie header.');
     }
 
     const imported = session.importSessionPayload(payload);

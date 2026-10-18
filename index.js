@@ -339,7 +339,7 @@ function buildNotification(result, retryNote) {
         case 'no_match':
             return { title: 'Cultify: No class booked', message: `No matching classes (${result.schedule}) with acceptable waitlist available on ${result.date}.${retryNote}` };
         case 'auth_expired':
-            return { title: 'Cultify: Session expired', message: 'Log in on next.cult.fit, then share the bookmarklet payload or paste a curl into Termux.', actionUrl: LOGIN_URL };
+            return { title: 'Cultify: Session expired', message: 'Log in on next.cult.fit, copy a fresh Cult.fit request as cURL, then run bash termux/paste-session.sh in Termux.', actionUrl: LOGIN_URL };
         default: {
             const dateSuffix = result.date ? ` (date=${result.date})` : '';
             return { title: 'Cultify: Booking failed', message: `${result.error || 'Unknown error'}${dateSuffix}.${retryNote}` };

@@ -1,9 +1,13 @@
 # Changelog
 
+## 2.0.2
+
+- Session import uses a browser-captured Cult.fit cURL command or Cookie header
+- Upgrades remove obsolete files and restore a pre-existing Termux URL handler
+
 ## 2.0.1
 
-- Firefox bookmarklet now copies the session to the clipboard; run `bash termux/paste-session.sh` in Termux to import it
-- Termux upgrades remind Firefox users to regenerate and replace the saved bookmarklet once
+- Session import uses a browser-captured Cult.fit cURL command or Cookie header
 
 ## 2.0.0
 
@@ -23,7 +27,7 @@ Breaking change: `schedule.yml` must use the `config:` list format. The upgrade 
 Breaking config change if you still use `PREFERRED_SLOTS` / `PREFERRED_WORKOUT` in `.env`. Run `bash termux/upgrade.sh` after `git pull`.
 
 - Weekday workout and slot preferences live in `schedule.yml` (not env vars)
-- Expired sessions can be refreshed into `.cultify-session` without editing `.env` (bookmarklet share, or `bash termux/paste-session.sh`)
+- Expired sessions can be refreshed into `.cultify-session` without editing `.env` using `bash termux/paste-session.sh`
 - Session-expired notification opens https://next.cult.fit and does not retry
 - Added `js-yaml` dependency
 
