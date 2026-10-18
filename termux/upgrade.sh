@@ -24,6 +24,7 @@ echo "==> Making scripts executable..."
 chmod +x "$REPO_DIR/termux/"*.sh
 
 echo "==> Running versioned migrations..."
+node "$REPO_DIR/scripts/ensure-user-schedule.js"
 node "$REPO_DIR/scripts/run-migrations.js" "$APPLIED" "$TARGET"
 
 echo "==> Installing automatic post-pull upgrade hooks..."
@@ -41,7 +42,7 @@ fi
 echo "==> Upgrade complete. Now at $TARGET"
 echo
 echo "Next:"
-echo "  - Review schedule.yml config entries."
+echo "  - Review schedule.local.yml config entries."
 echo "  - Session refresh: node scripts/print-bookmarklet.js"
 echo "    then Share to Termux, or: bash termux/paste-session.sh"
 echo "See CHANGELOG.md for details."

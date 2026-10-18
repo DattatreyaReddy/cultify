@@ -7,7 +7,9 @@ require('dotenv').config();
 
 const SCHEDULE_PATH = process.env.SCHEDULE_FILE
     ? path.resolve(process.env.SCHEDULE_FILE)
-    : path.join(__dirname, '..', 'schedule.yml');
+    : path.join(__dirname, '..', fs.existsSync(path.join(__dirname, '..', 'schedule.local.yml'))
+        ? 'schedule.local.yml'
+        : 'schedule.yml');
 const WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 const DAY_ALIASES = {
     sun: 'sunday', sunday: 'sunday',
@@ -84,14 +86,14 @@ function main() {
 
     const converted = convertWeekdaySchedule(raw);
     if (!converted) {
-        console.log('schedule.yml already uses the config list format.');
+        console.log(`${path.basename(SCHEDULE_PATH)} already uses the config list format.`);
         return;
     }
 
     const backupPath = `${SCHEDULE_PATH}.pre-2.0.0`;
     if (!fs.existsSync(backupPath)) {
         fs.copyFileSync(SCHEDULE_PATH, backupPath);
-        console.log(`Backed up schedule.yml to ${backupPath}`);
+        console.log(`Backed up ${path.basename(SCHEDULE_PATH)} to ${backupPath}`);
     } else {
         console.log(`Keeping existing backup at ${backupPath}`);
     }
@@ -99,7 +101,7 @@ function main() {
     const temporaryPath = `${SCHEDULE_PATH}.tmp`;
     fs.writeFileSync(temporaryPath, yaml.dump(converted, { lineWidth: -1, noRefs: true }));
     fs.renameSync(temporaryPath, SCHEDULE_PATH);
-    console.log('Converted schedule.yml to the config list format.');
+    console.log(`Converted ${path.basename(SCHEDULE_PATH)} to the config list format.`);
 }
 
 if (require.main === module) {

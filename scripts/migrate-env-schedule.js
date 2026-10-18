@@ -6,7 +6,6 @@ const path = require('node:path');
 const WEEKDAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 const ROOT = path.join(__dirname, '..');
 const ENV_PATH = path.join(ROOT, '.env');
-const SCHEDULE_PATH = path.join(ROOT, 'schedule.yml');
 
 function parseEnvFile(raw) {
     const vars = {};
@@ -46,7 +45,7 @@ function buildScheduleYaml(workouts, slots) {
     return yaml;
 }
 
-function commentOutLegacyVars(raw) {
+function commentOutLegacyVars(raw, schedulePath) {
     const keys = new Set(['PREFERRED_SLOTS', 'PREFERRED_WORKOUT', 'PREFERRED_SCHEDULE']);
     let touched = false;
     const lines = String(raw).split(/\r?\n/).map(line => {
@@ -57,7 +56,7 @@ function commentOutLegacyVars(raw) {
         const key = trimmed.split('=')[0].trim();
         if (keys.has(key)) {
             touched = true;
-            return `# Migrated to schedule.yml (1.1.0)\n# ${line}`;
+            return `# Migrated to ${path.basename(schedulePath)} (1.1.0)\n# ${line}`;
         }
         return line;
     });
@@ -72,11 +71,14 @@ function main() {
 
     const envRaw = fs.readFileSync(ENV_PATH, 'utf8');
     const vars = parseEnvFile(envRaw);
+    const SCHEDULE_PATH = vars.SCHEDULE_FILE
+        ? path.resolve(ROOT, vars.SCHEDULE_FILE)
+        : path.join(ROOT, 'schedule.local.yml');
     const slots = (vars.PREFERRED_SLOTS || '').split(',').map(s => s.trim()).filter(Boolean);
     const workouts = (vars.PREFERRED_WORKOUT || '').split(',').map(s => s.trim()).filter(Boolean);
 
     if (slots.length === 0 && workouts.length === 0) {
-        console.log('No PREFERRED_SLOTS / PREFERRED_WORKOUT in .env; leaving schedule.yml as-is.');
+        console.log(`No PREFERRED_SLOTS / PREFERRED_WORKOUT in .env; leaving ${path.basename(SCHEDULE_PATH)} as-is.`);
         return;
     }
 
@@ -85,12 +87,12 @@ function main() {
 
     if (fs.existsSync(SCHEDULE_PATH)) {
         fs.copyFileSync(SCHEDULE_PATH, `${SCHEDULE_PATH}.pre-1.1.0`);
-        console.log('Backed up schedule.yml to schedule.yml.pre-1.1.0');
+        console.log(`Backed up ${path.basename(SCHEDULE_PATH)} to ${path.basename(SCHEDULE_PATH)}.pre-1.1.0`);
     }
     fs.writeFileSync(SCHEDULE_PATH, buildScheduleYaml(resolvedWorkouts, resolvedSlots));
-    console.log(`Wrote schedule.yml from .env (${resolvedWorkouts.join(', ')} @ ${resolvedSlots.join(', ')}) for every weekday.`);
+    console.log(`Wrote ${path.basename(SCHEDULE_PATH)} from .env (${resolvedWorkouts.join(', ')} @ ${resolvedSlots.join(', ')}) for every weekday.`);
 
-    const commented = commentOutLegacyVars(envRaw);
+    const commented = commentOutLegacyVars(envRaw, SCHEDULE_PATH);
     if (commented.touched) {
         fs.copyFileSync(ENV_PATH, `${ENV_PATH}.pre-1.1.0`);
         fs.writeFileSync(ENV_PATH, commented.text);
@@ -98,4 +100,8 @@ function main() {
     }
 }
 
-main();
+if (require.main === module) {
+    main();
+}
+
+module.exports = { commentOutLegacyVars };

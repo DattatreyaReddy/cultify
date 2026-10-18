@@ -16,7 +16,7 @@ Cultify attempts to book fitness classes around a time you configure, using brow
 
 ## How it works
 
-Cultify uses `.cultify-session` when it exists; its cookies and authorization replace those from `.env`. Without an imported session, credentials from `.env` are used. The script fetches class availability, applies the configured weekday/workout/slot preferences, skips dates that are already booked, and attempts the first matching class or eligible waitlist. Attempts and outcomes are saved in `.cultify-state.json`; Termux logs runs under `termux/logs/`.
+Cultify uses `.cultify-session` when it exists; its cookies and authorization replace those from `.env`. Without an imported session, credentials from `.env` are used. The script fetches class availability, applies the configured weekday/workout/slot preferences from your local `schedule.local.yml`, skips dates that are already booked, and attempts the first matching class or eligible waitlist. Attempts and outcomes are saved in `.cultify-state.json`; Termux logs runs under `termux/logs/`.
 
 ## Prerequisites
 
@@ -46,7 +46,7 @@ cd cultify
 cp .env.example .env
 ```
 
-Edit `.env` for your preferred city and center, and edit `schedule.yml` for weekday workout and time-slot preferences. Days you omit are skipped. For the `.env` method, log in at https://next.cult.fit, open DevTools → Network, copy a `cult.fit` request as cURL (bash), and set `CURL_COMMAND` in `.env`; alternatively set `COOKIES` to a Cookie header. Treat either value as a password. See `.env.example` for settings. For browser login + session import, leave these credentials unset and follow step 3.
+Edit `.env` for your preferred city and center. `termux/setup.sh` creates `schedule.local.yml` from the tracked `schedule.yml` starter template; edit the local file for weekday workout and time-slot preferences after setup. Days you omit are skipped. For the `.env` method, log in at https://next.cult.fit, open DevTools → Network, copy a `cult.fit` request as cURL (bash), and set `CURL_COMMAND` in `.env`; alternatively set `COOKIES` to a Cookie header. Treat either value as a password. See `.env.example` for settings. For browser login + session import, leave these credentials unset and follow step 3.
 
 ### 2. Run setup
 
@@ -55,6 +55,8 @@ bash termux/setup.sh
 ```
 
 This installs Node.js, registers the daily JobScheduler job (checks in every ~15 min; inside your configured window it runs the booking flow, retrying on subsequent checks — up to 3 attempts total — until it succeeds or the window closes), and wires up a boot script so the job survives a phone reboot.
+
+Setup creates `schedule.local.yml` from `schedule.yml` if the personal file does not already exist. The tracked `schedule.yml` remains an example/template; edit `schedule.local.yml` so your preferences are not overwritten by future updates.
 
 It prints two things you must do manually (Android doesn't allow scripting these):
 
@@ -118,7 +120,7 @@ Set `TARGET_TIME` based on when bookings open for your account and location. And
 node index.js
 ```
 
-Runs the booking flow once immediately (with the same notification), useful for testing your `.env` and `schedule.yml` before relying on the scheduled job.
+Runs the booking flow once immediately (with the same notification), useful for testing your `.env` and `schedule.local.yml` before relying on the scheduled job.
 
 Note: this respects the same persisted state as the scheduled job (see below) — if today is already marked done in `.cultify-state.json` (repo root), a manual run will just log that and exit. Delete that file (or wait for the next day) to force a fresh attempt.
 
@@ -144,10 +146,16 @@ Each invocation reads/writes `.cultify-state.json` (repo root) — `{ date, atte
 | `COOKIES` | Optional Cookie header used when `CURL_COMMAND` is not set and no imported session exists | — |
 | `PREFERRED_CITY` | Injected into cookies if missing | `Hyderabad` |
 | `PREFERRED_CENTER` | Numeric Cult.fit center ID | `1515` |
-| `SCHEDULE_FILE` | Path to weekday workout/slot YAML | `schedule.yml` (repo root) |
+| `SCHEDULE_FILE` | Optional path to weekday workout/slot YAML | `schedule.local.yml` (repo root) |
 | `ENABLE_WAITLIST` | Join waitlist when full (skips if 15+ people already waitlisted) | `true` |
 
-### Weekday schedule (`schedule.yml`)
+### Weekday schedule (`schedule.local.yml`)
+
+Edit `schedule.local.yml` (created by setup from the tracked `schedule.yml` template). If running without setup, copy the template first:
+
+```bash
+cp schedule.yml schedule.local.yml
+```
 
 ```yaml
 config:
@@ -159,11 +167,11 @@ config:
     days: [monday, tuesday]
 ```
 
-Each config entry applies to its listed days; omit `days` to apply it to all seven days. Entries are tried in order, so later entries act as fallbacks. Quote times so YAML keeps them as strings (`"07:00:00"`, `"7:00"`, or `"7AM"`). Schedules use the `config` list format. During upgrade from a weekday-keyed schedule, the migration converts it and saves the original as `schedule.yml.pre-2.0.0`.
+Each config entry applies to its listed days; omit `days` to apply it to all seven days. Entries are tried in order, so later entries act as fallbacks. Quote times so YAML keeps them as strings (`"07:00:00"`, `"7:00"`, or `"7AM"`). Schedules use the `config` list format. During upgrade from a weekday-keyed schedule, the migration converts the personal schedule and saves the original as `schedule.local.yml.pre-2.0.0`.
 
 ### Updating Cultify
 
-Run `bash termux/upgrade.sh` after pulling an update to apply pending migrations and refresh dependencies. Migrations in `scripts/migrations/` are applied in version order, including when skipping releases. Setup and upgrades install local Git hooks that run the upgrade after future pull merges or rebases; any existing hooks are preserved and invoked first. If Git hooks are disabled or the repository uses a GUI that bypasses them, run the upgrade command manually.
+Run `bash termux/upgrade.sh` after pulling an update to apply pending migrations and refresh dependencies. Migrations in `scripts/migrations/` are applied in version order, including when skipping releases. Setup and upgrades install local Git hooks that run the upgrade after future pull merges or rebases; any existing hooks are preserved and invoked first. If Git hooks are disabled or the repository uses a GUI that bypasses them, run the upgrade command manually. The personal `schedule.local.yml` is gitignored; keep editing it rather than the tracked `schedule.yml` template to avoid schedule conflicts in future pulls.
 
 ### Finding your center ID
 

@@ -34,6 +34,7 @@ else
 fi
 
 echo "==> Applying pending migrations..."
+node "$REPO_DIR/scripts/ensure-user-schedule.js"
 node "$REPO_DIR/scripts/run-migrations.js" "$APPLIED" "$TARGET"
 printf '%s\n' "$TARGET" > "$STAMP"
 
@@ -93,8 +94,8 @@ cat <<'EOF'
    On MIUI/ColorOS/FuntouchOS/OneUI etc. also check the manufacturer's own
    "autostart"/"background activity" toggle for these apps.
 
-Copy your .env (see .env.example) into this repo and edit schedule.yml
-before the next scheduled run.
+Copy your .env (see .env.example) into this repo and edit schedule.local.yml
+before the next scheduled run. The tracked schedule.yml is the starter template.
 
 To refresh an expired session: log in at https://next.cult.fit, run the
 bookmarklet (see README), and share to Termux. Or paste a curl into:

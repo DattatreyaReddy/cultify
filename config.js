@@ -208,7 +208,8 @@ function resolveSchedulePath() {
     if (process.env.SCHEDULE_FILE) {
         return path.resolve(process.env.SCHEDULE_FILE);
     }
-    return path.join(__dirname, 'schedule.yml');
+    const userSchedule = path.join(__dirname, 'schedule.local.yml');
+    return fs.existsSync(userSchedule) ? userSchedule : path.join(__dirname, 'schedule.yml');
 }
 
 function loadPreferredSchedule() {
@@ -236,7 +237,7 @@ function loadPreferredSchedule() {
 }
 
 if (process.env.PREFERRED_SCHEDULE || process.env.PREFERRED_SLOTS || process.env.PREFERRED_WORKOUT) {
-    console.log('[DEBUG] PREFERRED_SCHEDULE / PREFERRED_SLOTS / PREFERRED_WORKOUT are no longer used. Edit schedule.yml instead.');
+    console.log('[DEBUG] PREFERRED_SCHEDULE / PREFERRED_SLOTS / PREFERRED_WORKOUT are no longer used. Edit schedule.local.yml instead.');
 }
 
 config = session.overlaySavedSession(config, savedSession);
