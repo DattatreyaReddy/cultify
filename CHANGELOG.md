@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+- Firefox bookmarklet now copies the session to the clipboard; run `bash termux/paste-session.sh` in Termux to import it
+- Termux upgrades remind Firefox users to regenerate and replace the saved bookmarklet once
+
 ## 2.0.0
 
 Breaking change: `schedule.yml` must use the `config:` list format. The upgrade migration converts weekday-keyed schedules and saves the original as `schedule.yml.pre-2.0.0`.

@@ -16,16 +16,23 @@ const bookmarklet = `javascript:(function(){
   try{ fromStore(localStorage); }catch(e){}
   try{ fromStore(sessionStorage); }catch(e){}
   var payload='cultify-session:v1\\n'+[document.cookie].concat(extras).filter(Boolean).join('; ');
-  function copied(){ alert('Cultify session copied. Reuse this saved bookmark after future logins. In Termux run: bash termux/paste-session.sh'); }
-  if(navigator.share){
-    navigator.share({title:'cultify-session', text:payload}).catch(function(){
-      if(navigator.clipboard) navigator.clipboard.writeText(payload).then(copied);
-      else prompt('Copy Cultify session', payload);
+  function copyToClipboard(){
+    if(!navigator.clipboard || !navigator.clipboard.writeText){
+      prompt('Copy Cultify session, then run bash termux/paste-session.sh in Termux', payload);
+      return;
+    }
+    navigator.clipboard.writeText(payload).then(function(){
+      alert('Cultify session copied. In Termux run: bash termux/paste-session.sh');
+    }).catch(function(){
+      prompt('Copy Cultify session, then run bash termux/paste-session.sh in Termux', payload);
     });
-  } else if(navigator.clipboard){
-    navigator.clipboard.writeText(payload).then(copied);
+  }
+  if(/Firefox/i.test(navigator.userAgent)){
+    copyToClipboard();
+  } else if(navigator.share){
+    navigator.share({title:'cultify-session', text:payload}).catch(copyToClipboard);
   } else {
-    prompt('Copy Cultify session', payload);
+    copyToClipboard();
   }
 })();`;
 

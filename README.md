@@ -87,7 +87,17 @@ This method avoids storing cookies in `.env`, but it does not refresh the login 
    - Open **⋮ → Bookmarks**, long-press the new bookmark, and choose **Edit bookmark**.
    - Set the name to `Cultify session export`, replace the address with the copied `javascript:...` line, then save.
 
-3. Whenever you need a session (including after it expires), open `https://next.cult.fit` in the same browser and sign in if prompted. Open the browser's Bookmarks menu, tap **Cultify session export**, and choose **Share → Termux**. Setup installs the Termux share handler, which saves the imported session to `.cultify-session`. The bookmark is reused; do not recreate it for each refresh.
+3. Whenever you need a session (including after it expires), open `https://next.cult.fit` in the same browser and sign in if prompted, then tap **Cultify session export** in the browser's Bookmarks menu. The bookmark is reused; do not recreate it for each refresh.
+
+   **Chrome for Android:** choose **Share → Termux**. Setup installs the Termux share handler, which saves the imported session to `.cultify-session`.
+
+   **Firefox for Android:** the bookmarklet copies the session to the clipboard instead of opening Share, because Firefox's share handoff may treat the text as a file. After the success alert, switch to Termux and run:
+
+   ```bash
+   bash termux/paste-session.sh
+   ```
+
+   If you already saved an older bookmarklet, regenerate it with `bash termux/create-bookmarklet.sh` and replace the bookmark URL once.
 
 The bookmarklet may not see HttpOnly cookies. If the imported payload is missing `at` / `st`, copy a curl command or `Cookie` header from the browser and run:
 
