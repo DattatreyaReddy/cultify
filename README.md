@@ -14,16 +14,9 @@ Cultify attempts to book fitness classes around a time you configure, using brow
 - Retries automatically on the next JobScheduler check (~15 min later) if nothing matched or a request failed, up to 3 attempts per day
 - Local, clickable Android notification with the result (booked / already booked / no match / session expired / error) — tapping a booked notification opens the class; tapping session expired opens next.cult.fit
 
-## How It Works
+## How it works
 
-1. Uses cookies from `.cultify-session` when present, overriding any bootstrap cookies or authorization in `.env`; without an imported session it uses credentials from `.env`
-2. Fetches available classes via the Cult.fit API
-3. Filters by your configured preferences (center, plus that weekday's workout and time slots)
-4. Checks for an existing booking on the target date — skips if found
-5. Books the first available matching class (or joins a short-enough waitlist)
-6. If nothing matched or a request failed, persists attempt state to `.cultify-state.json` (repo root) so the next JobScheduler check (~15 min later) retries automatically — up to 3 attempts/day total
-7. Sends a clickable Android notification with the outcome (tapping it opens the class in the Cult.fit app)
-8. Logs everything to `termux/logs/`
+Cultify uses `.cultify-session` when it exists; its cookies and authorization replace those from `.env`. Without an imported session, credentials from `.env` are used. The script fetches class availability, applies the configured weekday/workout/slot preferences, skips dates that are already booked, and attempts the first matching class or eligible waitlist. Attempts and outcomes are saved in `.cultify-state.json`; Termux logs runs under `termux/logs/`.
 
 ## Prerequisites
 
@@ -32,6 +25,17 @@ Cultify attempts to book fitness classes around a time you configure, using brow
 - [Termux](https://f-droid.org/packages/com.termux/), [Termux:API](https://f-droid.org/packages/com.termux.api/), and [Termux:Boot](https://f-droid.org/packages/com.termux.boot/) — install all three **from F-Droid**, not the Play Store (the Play Store build is unmaintained and won't work with the API/Boot add-ons)
 
 ## Setup
+
+### Choose an authentication method
+
+Cultify supports two ways to provide Cult.fit session credentials. Neither method prevents sessions from expiring, and Cult.fit does not document a supported token-refresh API.
+
+| Method | What you do | Pros | Cons |
+|---|---|---|---|
+| **Browser login + session import (recommended)** | Log in at `next.cult.fit`, then use a saved bookmarklet and share the session to Termux. | No curl or cookie values in `.env`; imported session is used on later runs; same bookmark is reused. | Not automatic login or token refresh. Initial bookmark setup is manual; after session expiry, log in, tap the bookmark, and share to Termux. |
+| **`CURL_COMMAND` / `COOKIES` in `.env`** | Copy a Cult.fit request as cURL from browser DevTools, or provide a Cookie header directly. | No bookmarklet setup; curl may provide API headers as well as bootstrap cookies. | Credentials can contain password-equivalent cookies; protect `.env`. Cookies can expire and replacing them in `.env` is manual. |
+
+If both are present, `.cultify-session` cookies take precedence over `.env` cookies and its authorization value replaces the one from `.env`; other API headers from `CURL_COMMAND` remain in use. Choose browser login to refresh without editing `.env`. Choose `CURL_COMMAND` or `COOKIES` if you prefer `.env` configuration and accept that you may need to replace credentials when they expire.
 
 ### 1. Clone and configure
 
@@ -42,9 +46,7 @@ cd cultify
 cp .env.example .env
 ```
 
-Edit `.env` for your preferred city and center, and edit `schedule.yml` for weekday workout and time-slot preferences. Days you omit are skipped. `CURL_COMMAND` is optional: you can use the browser-session flow below without putting a curl command in `.env`.
-
-If you prefer curl bootstrap credentials, log in at https://next.cult.fit, open DevTools → Network, copy a `cult.fit` request as cURL (bash), and set `CURL_COMMAND` in `.env`. Treat the full curl as a password: it can include authentication cookies. See `.env.example` for the optional setting.
+Edit `.env` for your preferred city and center, and edit `schedule.yml` for weekday workout and time-slot preferences. Days you omit are skipped. For the `.env` method, log in at https://next.cult.fit, open DevTools → Network, copy a `cult.fit` request as cURL (bash), and set `CURL_COMMAND` in `.env`; alternatively set `COOKIES` to a Cookie header. Treat either value as a password. See `.env.example` for settings. For browser login + session import, leave these credentials unset and follow step 3.
 
 ### 2. Run setup
 
@@ -59,26 +61,45 @@ It prints two things you must do manually (Android doesn't allow scripting these
 1. Open the Termux:Boot app once so it's activated.
 2. Disable battery optimization for Termux, Termux:API, and Termux:Boot: **Android Settings → Apps → [app] → Battery → Unrestricted**. On heavily customized Android skins (MIUI, ColorOS, FuntouchOS, OneUI, etc.) also check that manufacturer's own "autostart"/"background activity" toggle for these three apps — otherwise Android may still kill the job.
 
-### 3. Log in and import a browser session (recommended)
+### 3. Browser login + session import (manual; not automatic login)
 
-You can skip `CURL_COMMAND` and `.env` cookie credentials by importing a browser session:
+This method avoids storing cookies in `.env`, but it does not refresh the login automatically. Create the bookmarklet once; whenever a session is missing or expires, log in and reuse the saved bookmark to import a fresh one.
 
-1. Open https://next.cult.fit in your phone browser and log in.
-2. In Termux, generate the bookmarklet code:
+1. In Termux, generate the bookmarklet code:
 
    ```bash
    node scripts/print-bookmarklet.js
    ```
 
-3. Add the printed `javascript:...` text as a bookmark in the phone browser. While logged in to next.cult.fit, open that bookmark and choose **Share → Termux**. Setup installs the Termux share handler, which saves the imported session to `.cultify-session`.
+2. Copy the entire `javascript:...` line from the output. In your browser, create a bookmark for any page (for example, `https://next.cult.fit`), then edit that bookmark: set its name to `Cultify session export` and replace its URL/address with the copied `javascript:...` line. Save it. Browser menu names can vary slightly by version.
 
-If the bookmarklet share is missing the HttpOnly `at` / `st` cookies, copy a curl command or `Cookie` header from the browser and run:
+   **Chrome for Android**
+   - Open `https://next.cult.fit` and sign in, then use **⋮ → Add to bookmarks** (or the star icon) to create a temporary bookmark.
+   - Open **⋮ → Bookmarks**, find the new bookmark, and use its **⋮ → Edit** action.
+   - Set the name to `Cultify session export`, replace the URL with the copied `javascript:...` line, then save.
+
+   **Firefox for Android**
+   - Open `https://next.cult.fit` and sign in, then use **⋮ → Bookmark** to create a temporary bookmark.
+   - Open **⋮ → Bookmarks**, long-press the new bookmark, and choose **Edit bookmark**.
+   - Set the name to `Cultify session export`, replace the address with the copied `javascript:...` line, then save.
+
+3. Whenever you need a session (including after it expires), open `https://next.cult.fit` in the same browser and sign in if prompted. Open the browser's Bookmarks menu, tap **Cultify session export**, and choose **Share → Termux**. Setup installs the Termux share handler, which saves the imported session to `.cultify-session`. The bookmark is reused; do not recreate it for each refresh.
+
+The bookmarklet may not see HttpOnly cookies. If the imported payload is missing `at` / `st`, copy a curl command or `Cookie` header from the browser and run:
 
 ```bash
 bash termux/paste-session.sh
 ```
 
-The importer requires both `at` and `st`. It saves only recognized session cookies; `cf_clearance` and unrelated browser cookies are ignored. The imported session is used automatically on the next run and takes precedence over bootstrap cookies and authorization in `.env`. Import the session before the configured booking window; without either an imported session or bootstrap credentials, startup reports how to log in/import and cannot make booking requests.
+The importer requires both `at` and `st`. It saves only recognized session cookies; `cf_clearance` and unrelated browser cookies are ignored. It reads cookies from the shared bookmarklet payload or a pasted curl/Cookie header; it does not execute the curl request. The imported session is used automatically on the next run and takes precedence over bootstrap cookies and authorization in `.env`. Import the session before the configured booking window; without either an imported session or bootstrap credentials, startup explains how to import a session and cannot make booking requests. Treat `.cultify-session` as a password; it is gitignored and written atomically with owner-only permissions on supported filesystems.
+
+On a desktop, you can pipe a copied Cookie header or curl command to the importer:
+
+```bash
+pbpaste | node termux/import-session.js          # macOS
+```
+
+On Android/Termux, use `bash termux/paste-session.sh` instead.
 
 ### 4. Set your target time
 
@@ -119,7 +140,8 @@ Each invocation reads/writes `.cultify-state.json` (repo root) — `{ date, atte
 
 | Variable | Description | Default |
 |---|---|---|
-| `CURL_COMMAND` | Optional curl command for API headers and fallback cookies; imported session cookies take precedence when present | — |
+| `CURL_COMMAND` | Optional curl command for API headers and bootstrap cookies; imported session takes precedence when present | — |
+| `COOKIES` | Optional Cookie header used when `CURL_COMMAND` is not set and no imported session exists | — |
 | `PREFERRED_CITY` | Injected into cookies if missing | `Hyderabad` |
 | `PREFERRED_CENTER` | Numeric Cult.fit center ID | `1515` |
 | `SCHEDULE_FILE` | Path to weekday workout/slot YAML | `schedule.yml` (repo root) |
@@ -139,38 +161,9 @@ config:
 
 Each config entry applies to its listed days; omit `days` to apply it to all seven days. Entries are tried in order, so later entries act as fallbacks. Quote times so YAML keeps them as strings (`"07:00:00"`, `"7:00"`, or `"7AM"`). Schedules use the `config` list format. During upgrade from a weekday-keyed schedule, the migration converts it and saves the original as `schedule.yml.pre-2.0.0`.
 
-```yaml
-config:
-  - workout: HRX WORKOUT
-    slots: ["07:00:00", "08:00:00"]
-  - workout: BURN
-    slots: ["09:00:00"]
-```
+### Updating Cultify
 
 Run `bash termux/upgrade.sh` after pulling an update to apply pending migrations and refresh dependencies. Migrations in `scripts/migrations/` are applied in version order, including when skipping releases. Setup and upgrades install local Git hooks that run the upgrade after future pull merges or rebases; any existing hooks are preserved and invoked first. If Git hooks are disabled or the repository uses a GUI that bypasses them, run the upgrade command manually.
-
-### Refreshing the session (no `.env` edit)
-
-Cult.fit does not document a supported token-refresh API. When cookies expire, log in in the phone browser and import `at` / `st` (and related cookies) into gitignored `.cultify-session`; no `.env` edit or `CURL_COMMAND` is required for this flow. Booking still uses `www.cult.fit`; login is on `https://next.cult.fit`. The importer reads cookies from a copied curl command's `Cookie` header (or `-b` option); it does not execute the curl request or use its URL to refresh tokens. It stores only its allowlisted session cookies; `cf_clearance` and other unrecognized cookies are ignored. An imported `.cultify-session` takes precedence over `.env` cookies and clears its authorization header unless the session file contains an authorization value. Without an imported session file, `.env` credentials remain the fallback. Other API configuration continues to use its configured values. Both the session file and a copied curl command contain password-equivalent credentials; do not share or commit them. The session file is written atomically with owner-only permissions on supported filesystems.
-
-An API `401`, a recognized login-expired message, or a final redirect to `next.cult.fit` is reported as **Session expired**. Other errors (including unrelated `403` responses) remain booking failures so they are not mistaken for an expired login. A missing session file falls back to the bootstrap `.env` credentials; an existing but empty, malformed, or unreadable session file fails explicitly rather than silently using potentially stale credentials.
-
-**Bookmarklet (on next.cult.fit after login):**
-
-```bash
-node scripts/print-bookmarklet.js
-```
-
-Create a browser bookmark whose URL is that `javascript:...` line. Tap it while logged in, then **Share → Termux**. `setup.sh` installs `~/bin/termux-url-opener` so that share writes `.cultify-session`.
-
-`document.cookie` cannot see HttpOnly cookies. If the share is missing `at`/`st`, copy a curl command or Cookie header from the browser and run `bash termux/paste-session.sh`:
-
-On a desktop, you can also pipe a copied Cookie header or curl command to the importer:
-
-```bash
-pbpaste | node termux/import-session.js          # macOS
-termux-clipboard-get | node termux/import-session.js
-```
 
 ### Finding your center ID
 
@@ -190,7 +183,9 @@ Run `node index.js` once with any `PREFERRED_CENTER` — it logs a "Nearby gyms"
 
 ## Troubleshooting
 
-**"Login Required!" / session expired** — Cult.fit rejected the saved cookies. Session lifetime can vary. Tap the notification to open next.cult.fit, log in, then share the bookmarklet to Termux or run `bash termux/paste-session.sh`. You do not need to edit `.env`.
+**"Login Required!" / session expired** — Cult.fit rejected the saved cookies. Session lifetime can vary. Tap the notification to open next.cult.fit, log in, then open your saved bookmarklet and share it to Termux, or run `bash termux/paste-session.sh`. You do not need to recreate the bookmark or edit `.env`.
+
+An API `401`, recognized login-expired message, or final redirect to `next.cult.fit` is reported as **Session expired**. Unrelated errors, including other `403` responses, remain booking failures. A missing `.cultify-session` can fall back to `.env` credentials; an existing empty, malformed, or unreadable session file fails explicitly.
 
 **Job doesn't seem to run** — check `termux-job-scheduler --pending` to confirm the job is registered, and double-check the battery optimization / manufacturer autostart settings above. These are by far the most common reason a background Termux job silently stops firing.
 
@@ -200,7 +195,7 @@ Run `node index.js` once with any `PREFERRED_CENTER` — it logs a "Nearby gyms"
 
 - Up to 3 booking attempts per day (by design), spaced by JobScheduler ticks (~15 min apart, not a guaranteed exact interval)
 - Requires an active Cult.fit membership and a phone that stays on/connected around the target time
-- Session cookies may need manual refresh; Cult.fit does not document a supported token-refresh API
+- Session cookies may expire and require manual refresh
 - Waitlist position/confirmation is determined by Cult.fit, not this script
 
 ## License
