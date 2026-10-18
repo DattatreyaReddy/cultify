@@ -24,6 +24,22 @@ fi
 echo "==> Installing dependencies..."
 cd "$REPO_DIR" && npm install --omit=dev
 
+TARGET="$(tr -d '[:space:]' < "$REPO_DIR/VERSION")"
+STAMP="$REPO_DIR/.cultify-version"
+APPLIED="0.0.0"
+if [ -f "$STAMP" ]; then
+    APPLIED="$(tr -d '[:space:]' < "$STAMP")"
+else
+    echo "No version stamp found; running all migrations from the oldest baseline."
+fi
+
+echo "==> Applying pending migrations..."
+node "$REPO_DIR/scripts/run-migrations.js" "$APPLIED" "$TARGET"
+printf '%s\n' "$TARGET" > "$STAMP"
+
+echo "==> Installing automatic post-pull upgrade hooks..."
+bash "$REPO_DIR/scripts/install-git-hooks.sh"
+
 chmod +x "$REPO_DIR/termux/watcher.sh" "$REPO_DIR/termux/run-booking.sh" \
     "$REPO_DIR/termux/url-opener.sh" "$REPO_DIR/termux/paste-session.sh"
 

@@ -9,6 +9,7 @@ classes.json
 termux/logs/
 .cultify-state.json
 .cultify-session
+.cultify-version
 
 response.json
 get_centers.js

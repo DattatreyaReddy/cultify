@@ -1,6 +1,6 @@
 {
   "name": "cultify",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Auto-book Cult.fit classes",
   "main": "index.js",
   "scripts": {

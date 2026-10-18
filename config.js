@@ -53,6 +53,7 @@ function parseCurlCommand(curlString) {
     return config;
 }
 
+const savedSession = session.loadSession();
 let config;
 
 if (process.env.CURL_COMMAND) {
@@ -66,13 +67,22 @@ if (process.env.CURL_COMMAND) {
         timezone: process.env.TIMEZONE || "Asia/Kolkata",
         cookies: process.env.COOKIES
     };
+} else if (savedSession?.cookies) {
+    config = {
+        apiKey: process.env.API_KEY || "9d153009-e961-4718-a343-2a36b0a1d1fd",
+        appVersion: process.env.APP_VERSION || "7",
+        browserName: process.env.BROWSER_NAME || "Chrome",
+        osName: process.env.OS_NAME || "browser",
+        timezone: process.env.TIMEZONE || "Asia/Kolkata",
+        cookies: savedSession.cookies,
+        authorization: savedSession.authorization || ""
+    };
 } else {
     throw new Error(
         "No credentials found!\n\n" +
-        "Please set CURL_COMMAND environment variable.\n" +
-        "For GitHub Actions: Add it as a repository secret.\n" +
-        "For local testing: export CURL_COMMAND='your curl command here'\n\n" +
-        "See SETUP.md for instructions."
+        "Set CURL_COMMAND in .env or provide COOKIES.\n" +
+        "On Termux, import a browser session with termux/import-session.js.\n\n" +
+        "See README.md for instructions."
     );
 }
 
@@ -85,6 +95,7 @@ const DAY_ALIASES = {
     fri: 'friday', friday: 'friday',
     sat: 'saturday', saturday: 'saturday'
 };
+const WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 function formatHms(hour, minute, second) {
     if (hour > 23 || minute > 59 || second > 59) {
@@ -159,27 +170,35 @@ function normalizeSchedule(raw) {
         return {};
     }
     if (typeof raw !== 'object' || Array.isArray(raw)) {
-        throw new Error('schedule.yml must be a mapping of weekdays to workout/slot lists');
+        throw new Error('schedule.yml must contain a config list');
     }
 
-    const schedule = {};
-    for (const [key, value] of Object.entries(raw)) {
-        const day = DAY_ALIASES[String(key).trim().toLowerCase()];
-        if (!day) {
-            throw new Error(`Unknown weekday "${key}" in schedule.yml`);
-        }
-        if (value == null) {
-            continue;
-        }
-
-        const groups = Array.isArray(value)
-            ? value.map(group => normalizeGroup(group, day))
-            : [normalizeGroup(value, day)];
-
-        schedule[day] = groups;
+    if (!Array.isArray(raw.config)) {
+        throw new Error('schedule.yml config must be a list of workout/slot entries');
     }
 
-    return schedule;
+    const schedule = Object.fromEntries(WEEKDAYS.map(day => [day, []]));
+    raw.config.forEach((entry, index) => {
+        const context = `config entry ${index + 1}`;
+        const days = entry?.days == null ? WEEKDAYS : asList(entry.days).map(value => {
+            const dayName = String(value).trim().toLowerCase();
+            const day = DAY_ALIASES[dayName];
+            if (!day) {
+                throw new Error(`Unknown weekday "${value}" in ${context} of schedule.yml`);
+            }
+            return day;
+        });
+        if (days.length === 0) {
+            throw new Error(`Missing days in ${context} of schedule.yml; omit days to apply it every day`);
+        }
+
+        const group = normalizeGroup(entry, context);
+        for (const day of new Set(days)) {
+            schedule[day].push(group);
+        }
+    });
+
+    return Object.fromEntries(Object.entries(schedule).filter(([, groups]) => groups.length > 0));
 }
 
 function resolveSchedulePath() {
@@ -192,10 +211,14 @@ function resolveSchedulePath() {
 function loadPreferredSchedule() {
     const filePath = resolveSchedulePath();
     if (!fs.existsSync(filePath)) {
-        throw new Error(
-            `Schedule file not found: ${filePath}\n` +
-            'Create schedule.yml in the repo root (see the example in the README).'
-        );
+        const defaultSchedule = {
+            config: [{
+                workout: 'HRX WORKOUT',
+                slots: ['07:00:00', '08:00:00', '09:00:00']
+            }]
+        };
+        console.log(`[DEBUG] Schedule file not found at ${filePath}; using default schedule`);
+        return normalizeSchedule(defaultSchedule);
     }
 
     let raw;
@@ -213,7 +236,6 @@ if (process.env.PREFERRED_SCHEDULE || process.env.PREFERRED_SLOTS || process.env
     console.log('[DEBUG] PREFERRED_SCHEDULE / PREFERRED_SLOTS / PREFERRED_WORKOUT are no longer used. Edit schedule.yml instead.');
 }
 
-const savedSession = session.loadSession();
 if (savedSession?.cookies) {
     config.cookies = savedSession.cookies;
     console.log(`[DEBUG] Using cookies from ${session.sessionFilePath()}`);

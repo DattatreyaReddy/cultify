@@ -1,17 +1,15 @@
-# Weekday booking preferences. Days you omit are skipped.
-# List items on a day are tried in order (fallbacks).
+# Booking preferences. Config entries are tried in order for each matching day.
+# Omit days to apply an entry every day.
 # Times can be "07:00:00", "7:00", or "7AM" — quote them so YAML keeps them as strings.
 
-monday:
+config:
   - workout: HRX WORKOUT
     slots: ["07:00:00", "08:00:00"]
-
-tuesday:
+    days: [monday]
   - workout: ADIDAS STRENGTH+
     slots: ["07:30:00", "08:30:00"]
+    days: [tuesday]
 
-# wednesday:
-#   - workout: HRX WORKOUT
-#     slots: ["07:00:00", "08:00:00"]
-#   - workout: BURN
-#     slots: ["09:00:00"]
+# Example entry with no days applies every day:
+#  - workout: BURN
+#    slots: ["09:00:00"]

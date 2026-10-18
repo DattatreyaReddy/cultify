@@ -119,24 +119,26 @@ Each invocation reads/writes `.cultify-state.json` (repo root) — `{ date, atte
 ### Weekday schedule (`schedule.yml`)
 
 ```yaml
-monday:
+config:
   - workout: HRX WORKOUT
     slots: ["07:00:00", "08:00:00"]
-
-tuesday:
+    days: [monday]
   - workout: ADIDAS STRENGTH+
     slots: ["07:30:00", "08:30:00"]
+    days: [monday, tuesday]
 ```
 
-That books HRX at 7:00 or 8:00 on Monday, and Adidas Strength+ at 7:30 or 8:30 on Tuesday. Days you omit are skipped. Quote times so YAML keeps them as strings (`"07:00:00"`, `"7:00"`, or `"7AM"`). Extra list items on the same day are fallbacks, tried in order:
+Each config entry applies to its listed days; omit `days` to apply it to all seven days. Entries are tried in order, so later entries act as fallbacks. Quote times so YAML keeps them as strings (`"07:00:00"`, `"7:00"`, or `"7AM"`). This release requires the `config` list format. During upgrade, weekday-keyed schedules are converted and backed up as `schedule.yml.pre-2.0.0`.
 
 ```yaml
-monday:
+config:
   - workout: HRX WORKOUT
     slots: ["07:00:00", "08:00:00"]
   - workout: BURN
     slots: ["09:00:00"]
 ```
+
+After pulling this release, run `bash termux/upgrade.sh` once to install automatic upgrades. It applies each applicable `scripts/migrations/<version>.sh` in version order, so skipped releases are upgraded sequentially. Setup and upgrades install local Git hooks that run it after future pull merges or rebases; any existing hooks are preserved and invoked first. If Git hooks are disabled or the repository uses a GUI that bypasses them, run the upgrade command manually.
 
 ### Refreshing the session (no `.env` edit)
 
