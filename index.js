@@ -2,6 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const config = require('./config'),
+    auth = require('./auth'),
     /*
     Maintaining a list of activities and my preference
     The id field is the workoutId which part of classes object as a response of `api/cult/classes/` API
@@ -401,7 +402,7 @@ async function makeAPICall(request, host, path, method, headers) {
     const contentType = response.headers.get('content-type') || '';
     const bodyText = await response.text();
 
-    if (response.status === 401 || isAuthExpiredMessage(bodyText)) {
+    if (auth.isAuthExpiredResponse(response, bodyText)) {
         console.error(`[DEBUG] Auth expired. status=${response.status}`);
         throw Object.assign(new Error(bodyText || `HTTP ${response.status}`), { code: 'AUTH_EXPIRED' });
     }
@@ -414,7 +415,7 @@ async function makeAPICall(request, host, path, method, headers) {
     if (contentType.includes('application/json')) {
         const parsed = bodyText ? JSON.parse(bodyText) : {};
         const parsedText = typeof parsed === 'string' ? parsed : JSON.stringify(parsed);
-        if (isAuthExpiredMessage(parsedText) || isAuthExpiredMessage(parsed?.message) || isAuthExpiredMessage(parsed?.error)) {
+        if (auth.isAuthExpiredMessage(parsedText) || auth.isAuthExpiredMessage(parsed?.message) || auth.isAuthExpiredMessage(parsed?.error)) {
             throw Object.assign(new Error(parsed?.message || parsed?.error || parsedText), { code: 'AUTH_EXPIRED' });
         }
         return parsed;
@@ -423,15 +424,8 @@ async function makeAPICall(request, host, path, method, headers) {
     return bodyText;
 }
 
-function isAuthExpiredMessage(text) {
-    if (!text) {
-        return false;
-    }
-    return /login required/i.test(String(text)) || /auth expired/i.test(String(text));
-}
-
 function isAuthExpiredError(error) {
-    return error?.code === 'AUTH_EXPIRED' || isAuthExpiredMessage(error?.message);
+    return error?.code === 'AUTH_EXPIRED' || auth.isAuthExpiredMessage(error?.message);
 }
 
 function getSlots(classesForDay, slot, classTypes, centerInfoMap) {

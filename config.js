@@ -58,16 +58,8 @@ let config;
 
 if (process.env.CURL_COMMAND) {
     config = parseCurlCommand(process.env.CURL_COMMAND);
-} else if (process.env.COOKIES) {
-    config = {
-        apiKey: process.env.API_KEY || "9d153009-e961-4718-a343-2a36b0a1d1fd",
-        appVersion: process.env.APP_VERSION || "7",
-        browserName: process.env.BROWSER_NAME || "Chrome",
-        osName: process.env.OS_NAME || "browser",
-        timezone: process.env.TIMEZONE || "Asia/Kolkata",
-        cookies: process.env.COOKIES
-    };
 } else if (savedSession?.cookies) {
+    console.log(`[DEBUG] CURL_COMMAND not configured; using imported browser session from ${session.sessionFilePath()}`);
     config = {
         apiKey: process.env.API_KEY || "9d153009-e961-4718-a343-2a36b0a1d1fd",
         appVersion: process.env.APP_VERSION || "7",
@@ -77,12 +69,23 @@ if (process.env.CURL_COMMAND) {
         cookies: savedSession.cookies,
         authorization: savedSession.authorization || ""
     };
+} else if (process.env.COOKIES) {
+    config = {
+        apiKey: process.env.API_KEY || "9d153009-e961-4718-a343-2a36b0a1d1fd",
+        appVersion: process.env.APP_VERSION || "7",
+        browserName: process.env.BROWSER_NAME || "Chrome",
+        osName: process.env.OS_NAME || "browser",
+        timezone: process.env.TIMEZONE || "Asia/Kolkata",
+        cookies: process.env.COOKIES
+    };
 } else {
     throw new Error(
-        "No credentials found!\n\n" +
-        "Set CURL_COMMAND in .env or provide COOKIES.\n" +
-        "On Termux, import a browser session with termux/import-session.js.\n\n" +
-        "See README.md for instructions."
+        "No Cult.fit session found!\n\n" +
+        "CURL_COMMAND is optional when using browser login.\n" +
+        "Log in at https://next.cult.fit, then import cookies with the bookmarklet/share flow or run:\n" +
+        "  bash termux/paste-session.sh\n" +
+        "The imported session is saved in .cultify-session and used automatically on the next run.\n\n" +
+        "Alternatively, set CURL_COMMAND or COOKIES in .env. See README.md for instructions."
     );
 }
 
@@ -236,12 +239,11 @@ if (process.env.PREFERRED_SCHEDULE || process.env.PREFERRED_SLOTS || process.env
     console.log('[DEBUG] PREFERRED_SCHEDULE / PREFERRED_SLOTS / PREFERRED_WORKOUT are no longer used. Edit schedule.yml instead.');
 }
 
+config = session.overlaySavedSession(config, savedSession);
 if (savedSession?.cookies) {
-    config.cookies = savedSession.cookies;
-    console.log(`[DEBUG] Using cookies from ${session.sessionFilePath()}`);
-}
-if (savedSession?.authorization) {
-    config.authorization = savedSession.authorization;
+    if (process.env.CURL_COMMAND) {
+        console.log(`[DEBUG] Using imported session cookies from ${session.sessionFilePath()}`);
+    }
 }
 
 const preferredCity = process.env.PREFERRED_CITY || 'Hyderabad';

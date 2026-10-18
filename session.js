@@ -2,6 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { randomUUID } = require('node:crypto');
 
 const SESSION_FILE = path.join(__dirname, '.cultify-session');
 const SESSION_COOKIE_KEYS = [
@@ -111,26 +112,46 @@ function isSessionPayload(text) {
     return /\bat=/i.test(raw) && /\bst=/i.test(raw);
 }
 
-function loadSession() {
+function loadSession(filePath = SESSION_FILE) {
+    let raw;
     try {
-        const raw = fs.readFileSync(SESSION_FILE, 'utf8').trim();
-        if (!raw) {
+        raw = fs.readFileSync(filePath, 'utf8').trim();
+    } catch (error) {
+        if (error.code === 'ENOENT') {
             return null;
         }
-        if (raw.startsWith('{')) {
-            const parsed = JSON.parse(raw);
-            if (parsed && parsed.cookies) {
-                return { cookies: parsed.cookies, authorization: parsed.authorization || '' };
-            }
-        }
-        const line = raw.match(/^cookies=(.*)$/im);
-        return { cookies: line ? line[1].trim() : raw, authorization: '' };
-    } catch {
-        return null;
+        throw new Error(`Unable to read session file ${filePath}: ${error.message}`, { cause: error });
     }
+
+    if (!raw) {
+        throw new Error(`Session file ${filePath} is empty. Import a fresh session from next.cult.fit.`);
+    }
+
+    if (raw.startsWith('{')) {
+        let parsed;
+        try {
+            parsed = JSON.parse(raw);
+        } catch (error) {
+            throw new Error(`Session file ${filePath} contains invalid JSON: ${error.message}`, { cause: error });
+        }
+        if (!parsed || typeof parsed.cookies !== 'string' || !parsed.cookies.trim()) {
+            throw new Error(`Session file ${filePath} has an invalid cookies field. Import a fresh session from next.cult.fit.`);
+        }
+        if (parsed.authorization != null && typeof parsed.authorization !== 'string') {
+            throw new Error(`Session file ${filePath} has an invalid authorization field.`);
+        }
+        return { cookies: parsed.cookies, authorization: parsed.authorization || '' };
+    }
+
+    const line = raw.match(/^cookies=(.*)$/im);
+    const cookies = line ? line[1].trim() : raw;
+    if (!cookies) {
+        throw new Error(`Session file ${filePath} contains no cookies. Import a fresh session from next.cult.fit.`);
+    }
+    return { cookies, authorization: '' };
 }
 
-function saveSession({ cookies, authorization }) {
+function saveSession({ cookies, authorization }, filePath = SESSION_FILE) {
     const payload = {
         cookies,
         updatedAt: new Date().toISOString()
@@ -138,16 +159,33 @@ function saveSession({ cookies, authorization }) {
     if (authorization) {
         payload.authorization = authorization;
     }
-    fs.writeFileSync(SESSION_FILE, JSON.stringify(payload, null, 2) + '\n');
+    const temporaryPath = `${filePath}.${process.pid}.${randomUUID()}.tmp`;
+    try {
+        fs.writeFileSync(temporaryPath, JSON.stringify(payload, null, 2) + '\n', {
+            encoding: 'utf8',
+            flag: 'wx',
+            mode: 0o600
+        });
+        fs.renameSync(temporaryPath, filePath);
+    } catch (error) {
+        try {
+            fs.unlinkSync(temporaryPath);
+        } catch (cleanupError) {
+            if (cleanupError.code !== 'ENOENT') {
+                throw new AggregateError([error, cleanupError], `Unable to save or clean up session file ${filePath}`);
+            }
+        }
+        throw new Error(`Unable to save session file ${filePath}: ${error.message}`, { cause: error });
+    }
 }
 
-function importSessionPayload(text) {
+function importSessionPayload(text, filePath = SESSION_FILE) {
     const map = extractSessionCookies(cookiesFromPayload(text));
     if (!hasAtAndSt(map)) {
         throw new Error('Session payload is missing at/st cookies. Log in on next.cult.fit and share or paste a curl / Cookie header.');
     }
     const cookies = cookieMapToString(map);
-    saveSession({ cookies });
+    saveSession({ cookies }, filePath);
     return {
         cookies,
         keys: [...map.keys()]
@@ -164,6 +202,17 @@ function injectCityCookie(cookies, preferredCity) {
     return cookies;
 }
 
+function overlaySavedSession(config, savedSession) {
+    if (!savedSession?.cookies) {
+        return config;
+    }
+    return {
+        ...config,
+        cookies: savedSession.cookies,
+        authorization: savedSession.authorization || ''
+    };
+}
+
 module.exports = {
     SESSION_FILE,
     sessionFilePath,
@@ -177,5 +226,6 @@ module.exports = {
     loadSession,
     saveSession,
     importSessionPayload,
-    injectCityCookie
+    injectCityCookie,
+    overlaySavedSession
 };
