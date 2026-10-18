@@ -14,12 +14,12 @@ Cultify books fitness classes at Cult.fit centers automatically, right when the 
 - Smart booking logic (skips if already booked that day)
 - Waitlist support (joins the queue when a class is full, skips overly long waitlists — counts as a successful outcome)
 - Retries automatically on the next JobScheduler check (~15 min later) if nothing matched or a request failed, up to 3 attempts per day
-- Local, clickable Android notification with the result (booked / already booked / no match / error) — tapping it opens the class in the Cult.fit app
+- Local, clickable Android notification with the result (booked / already booked / no match / session expired / error) — tapping a booked notification opens the class; tapping session expired opens next.cult.fit
 - Runs entirely on-device — no server, no CI queue, no external costs
 
 ## How It Works
 
-1. Extracts authentication from a browser curl command (`.env`)
+1. Extracts authentication from a browser curl command (`.env`) and overlays cookies from `.cultify-session` when present
 2. Fetches available classes via the Cult.fit API
 3. Filters by your configured preferences (center, plus that weekday's workout and time slots)
 4. Checks for an existing booking on the target date — skips if found
@@ -38,9 +38,9 @@ Cultify books fitness classes at Cult.fit centers automatically, right when the 
 
 ### 1. Get authentication
 
-You need a curl command containing your session cookies:
+You need a curl command containing your session cookies (bootstrap for apikey / user-agent; later refreshes do not edit `.env`):
 
-1. Open https://www.cult.fit in a browser and log in
+1. Open https://next.cult.fit in a browser and log in
 2. Open DevTools (F12) → Network tab → refresh the page
 3. Pick any request to the `cult.fit` domain → right-click → Copy → Copy as cURL (bash)
 4. Flatten it to a single line (remove the trailing backslashes/line breaks)
@@ -99,6 +99,7 @@ Everything is logged to `termux/logs/<date>.log` (auto-pruned after 30 days), an
 - **Cultify: Class booked!** — booked or joined a waitlist successfully (tap to open the class in the Cult.fit app)
 - **Cultify: Already booked** — you already had a booking for that date (also tappable)
 - **Cultify: No class booked** — nothing matched your preferences; retries automatically on the next JobScheduler check unless attempts are exhausted
+- **Cultify: Session expired** — cookies were rejected (`Login Required` / `AUTH EXPIRED` / HTTP 401). Tap to open next.cult.fit, then import a fresh session (below). This does not retry.
 - **Cultify: Booking failed** — an error occurred (check the log for details); also retries automatically unless attempts are exhausted
 
 ### Retry state
@@ -109,7 +110,7 @@ Each invocation reads/writes `.cultify-state.json` (repo root) — `{ date, atte
 
 | Variable | Description | Default |
 |---|---|---|
-| `CURL_COMMAND` | Full curl command with auth headers/cookies (required) | — |
+| `CURL_COMMAND` | Full curl command with auth headers/cookies (required bootstrap) | — |
 | `PREFERRED_CITY` | Injected into cookies if missing | `Hyderabad` |
 | `PREFERRED_CENTER` | Numeric Cult.fit center ID | `1515` |
 | `SCHEDULE_FILE` | Path to weekday workout/slot YAML | `schedule.yml` (repo root) |
@@ -137,6 +138,30 @@ monday:
     slots: ["09:00:00"]
 ```
 
+### Refreshing the session (no `.env` edit)
+
+Cult.fit has no token-refresh API. When cookies expire, log in in the phone browser and import `at` / `st` (and related cookies) into gitignored `.cultify-session`. Booking still uses `www.cult.fit`; login is on `https://next.cult.fit`. `cf_clearance` is ignored.
+
+**Bookmarklet (on next.cult.fit after login):**
+
+```bash
+node scripts/print-bookmarklet.js
+```
+
+Create a browser bookmark whose URL is that `javascript:...` line. Tap it while logged in, then **Share → Termux**. `setup.sh` installs `~/bin/termux-url-opener` so that share writes `.cultify-session`.
+
+`document.cookie` cannot see HttpOnly cookies. If the share is missing `at`/`st`:
+
+1. Copy a curl or Cookie header from Firefox DevTools (desktop) or a cookie editor
+2. In Termux run `bash termux/paste-session.sh` (clipboard first, then a paste dialog)
+
+Or:
+
+```bash
+pbpaste | node termux/import-session.js          # macOS
+termux-clipboard-get | node termux/import-session.js
+```
+
 ### Finding your center ID
 
 Run `node index.js` once with any `PREFERRED_CENTER` — it logs a "Nearby gyms" list with each center's name and ID.
@@ -155,7 +180,7 @@ Run `node index.js` once with any `PREFERRED_CENTER` — it logs a "Nearby gyms"
 
 ## Troubleshooting
 
-**"Login Required!" errors** — session cookies expired (typically 7-30 days). Get a fresh curl command (Setup step 1) and update `CURL_COMMAND` in `.env`.
+**"Login Required!" / session expired** — cookies expired (typically 7-30 days). Tap the notification to open next.cult.fit, log in, then share the bookmarklet to Termux or run `bash termux/paste-session.sh`. You do not need to edit `.env`.
 
 **Job doesn't seem to run** — check `termux-job-scheduler --pending` to confirm the job is registered, and double-check the battery optimization / manufacturer autostart settings above. These are by far the most common reason a background Termux job silently stops firing.
 
@@ -165,7 +190,7 @@ Run `node index.js` once with any `PREFERRED_CENTER` — it logs a "Nearby gyms"
 
 - Up to 3 booking attempts per day (by design), spaced by JobScheduler ticks (~15 min apart, not a guaranteed exact interval)
 - Requires an active Cult.fit membership and a phone that stays on/connected around the target time
-- Session cookies need periodic manual refresh (7-30 days)
+- Session cookies need periodic manual refresh (7-30 days) via the bookmarklet or a pasted curl, not a login API
 - Waitlist position/confirmation is determined by Cult.fit, not this script
 
 ## License

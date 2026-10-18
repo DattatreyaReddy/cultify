@@ -2,6 +2,7 @@ require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 const yaml = require('js-yaml');
+const session = require('./session');
 
 function parseCurlCommand(curlString) {
     const config = {
@@ -49,12 +50,6 @@ function parseCurlCommand(curlString) {
         config.cookies += `; city=${preferredCity};`;
     }
 
-    console.log("--- DEBUG INFO ---");
-    console.log("Cookies parsed?", !!config.cookies);
-    console.log("API Key parsed/defaulted?", !!config.apiKey);
-    console.log("Auth header parsed?", !!config.authorization);
-    console.log("------------------");
-    
     return config;
 }
 
@@ -217,6 +212,25 @@ function loadPreferredSchedule() {
 if (process.env.PREFERRED_SCHEDULE || process.env.PREFERRED_SLOTS || process.env.PREFERRED_WORKOUT) {
     console.log('[DEBUG] PREFERRED_SCHEDULE / PREFERRED_SLOTS / PREFERRED_WORKOUT are no longer used. Edit schedule.yml instead.');
 }
+
+const savedSession = session.loadSession();
+if (savedSession?.cookies) {
+    config.cookies = savedSession.cookies;
+    console.log(`[DEBUG] Using cookies from ${session.sessionFilePath()}`);
+}
+if (savedSession?.authorization) {
+    config.authorization = savedSession.authorization;
+}
+
+const preferredCity = process.env.PREFERRED_CITY || 'Hyderabad';
+config.cookies = session.injectCityCookie(config.cookies, preferredCity);
+
+console.log("--- DEBUG INFO ---");
+console.log("Cookies parsed?", !!config.cookies);
+console.log("API Key parsed/defaulted?", !!config.apiKey);
+console.log("Auth header parsed?", !!config.authorization);
+console.log("Session file?", !!savedSession?.cookies);
+console.log("------------------");
 
 config.preferredCenter = process.env.PREFERRED_CENTER ? parseInt(process.env.PREFERRED_CENTER) : null;
 config.preferredSchedule = loadPreferredSchedule();

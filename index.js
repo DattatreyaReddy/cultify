@@ -69,6 +69,7 @@ const URI = {
 };
 const HTTP_POST = "POST",
     HTTP_GET = "GET";
+const LOGIN_URL = "https://next.cult.fit";
 
 
 const PREFERRED_CENTER = config.preferredCenter || 1515;
@@ -259,6 +260,10 @@ async function main() {
 
         return { status: 'booked', ...bookedInfo };
     } catch (error) {
+        if (isAuthExpiredError(error)) {
+            console.error("Session expired. Log in at next.cult.fit and share/paste cookies into Termux.");
+            return { status: 'auth_expired', error: error.message };
+        }
         errorHandler(error);
         return { status: 'error', error: error.message };
     }
@@ -321,6 +326,8 @@ function buildNotification(result, retryNote) {
             return { title: 'Cultify: No class booked', message: `No workout/slot preferences configured for ${result.weekday} (${result.date}).${retryNote}` };
         case 'no_match':
             return { title: 'Cultify: No class booked', message: `No matching classes (${result.schedule}) with acceptable waitlist available on ${result.date}.${retryNote}` };
+        case 'auth_expired':
+            return { title: 'Cultify: Session expired', message: 'Log in on next.cult.fit, then share the bookmarklet payload or paste a curl into Termux.', actionUrl: LOGIN_URL };
         default: {
             const dateSuffix = result.date ? ` (date=${result.date})` : '';
             return { title: 'Cultify: Booking failed', message: `${result.error || 'Unknown error'}${dateSuffix}.${retryNote}` };
@@ -345,12 +352,12 @@ async function run() {
     const result = await main();
 
     const succeeded = result.status === 'booked' || result.status === 'already_booked';
-    const noPointRetrying = result.status === 'no_schedule';
+    const noPointRetrying = result.status === 'no_schedule' || result.status === 'auth_expired';
     state.done = succeeded || noPointRetrying || state.attempts >= MAX_ATTEMPTS;
     saveState(state);
 
     let retryNote = '';
-    if (!succeeded) {
+    if (!succeeded && result.status !== 'auth_expired') {
         retryNote = state.done ? ' Giving up for today.' : ' Will retry on the next check.';
     }
     const { title, message, actionUrl } = buildNotification(result, retryNote);
@@ -391,18 +398,40 @@ async function makeAPICall(request, host, path, method, headers) {
     const response = await fetch(url, options);
     console.log(`[DEBUG] Received response. status=${response.status}, ok=${response.ok}`);
 
+    const contentType = response.headers.get('content-type') || '';
+    const bodyText = await response.text();
+
+    if (response.status === 401 || isAuthExpiredMessage(bodyText)) {
+        console.error(`[DEBUG] Auth expired. status=${response.status}`);
+        throw Object.assign(new Error(bodyText || `HTTP ${response.status}`), { code: 'AUTH_EXPIRED' });
+    }
+
     if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`[DEBUG] API call failed. status=${response.status}, errorText=${errorText}`);
-        throw new Error(errorText || `HTTP ${response.status}`);
+        console.error(`[DEBUG] API call failed. status=${response.status}, errorText=${bodyText}`);
+        throw new Error(bodyText || `HTTP ${response.status}`);
     }
 
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
-        return await response.json();
+    if (contentType.includes('application/json')) {
+        const parsed = bodyText ? JSON.parse(bodyText) : {};
+        const parsedText = typeof parsed === 'string' ? parsed : JSON.stringify(parsed);
+        if (isAuthExpiredMessage(parsedText) || isAuthExpiredMessage(parsed?.message) || isAuthExpiredMessage(parsed?.error)) {
+            throw Object.assign(new Error(parsed?.message || parsed?.error || parsedText), { code: 'AUTH_EXPIRED' });
+        }
+        return parsed;
     }
 
-    return await response.text();
+    return bodyText;
+}
+
+function isAuthExpiredMessage(text) {
+    if (!text) {
+        return false;
+    }
+    return /login required/i.test(String(text)) || /auth expired/i.test(String(text));
+}
+
+function isAuthExpiredError(error) {
+    return error?.code === 'AUTH_EXPIRED' || isAuthExpiredMessage(error?.message);
 }
 
 function getSlots(classesForDay, slot, classTypes, centerInfoMap) {
