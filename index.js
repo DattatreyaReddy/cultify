@@ -71,27 +71,47 @@ const HTTP_POST = "POST",
     HTTP_GET = "GET";
 
 
-const PREFERRED_SLOTS = config.preferredSlots || ['09:00:00'];
 const PREFERRED_CENTER = config.preferredCenter || 1515;
-const PREFERRED_WORKOUT_NAMES = config.preferredWorkouts || ["HRX WORKOUT"];
+const PREFERRED_SCHEDULE = config.preferredSchedule || {};
 const ENABLE_WAITLIST = config.enableWaitlist !== false;
+const WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
-const PREFERRED_CLASSES_IN_ORDER = [];
-let currentPreference = 1;
-PREFERRED_WORKOUT_NAMES.forEach(name => {
-    let matches = Object.values(ActivityType).filter(activity => activity.name === name);
-    matches.forEach(m => {
-        let cloned = Object.assign({}, m);
-        cloned.preference = currentPreference++;
-        PREFERRED_CLASSES_IN_ORDER.push(cloned);
-    });
-});
-
-console.log(`[DEBUG] Preferred slots: ${JSON.stringify(PREFERRED_SLOTS)}`);
 console.log(`[DEBUG] Preferred center: ${PREFERRED_CENTER}`);
-console.log(`[DEBUG] Preferred workouts from config: ${JSON.stringify(PREFERRED_WORKOUT_NAMES)}`);
+console.log(`[DEBUG] Preferred schedule: ${JSON.stringify(PREFERRED_SCHEDULE)}`);
 console.log(`[DEBUG] Enable waitlist: ${ENABLE_WAITLIST}`);
-console.log(`[DEBUG] Final ordered preferred classes: ${JSON.stringify(PREFERRED_CLASSES_IN_ORDER)}`);
+
+function weekdayFromDateId(dateId) {
+    const parts = String(dateId).split('-').map(Number);
+    if (parts.length !== 3 || parts.some(n => Number.isNaN(n))) {
+        throw new Error(`Cannot parse weekday from date id: ${dateId}`);
+    }
+    const [year, month, day] = parts;
+    return WEEKDAYS[new Date(Date.UTC(year, month - 1, day)).getUTCDay()];
+}
+
+function preferredClassesForNames(workoutNames) {
+    const preferred = [];
+    let currentPreference = 1;
+    workoutNames.forEach(name => {
+        const matches = Object.values(ActivityType).filter(activity => activity.name === name);
+        if (matches.length === 0) {
+            console.log(`[DEBUG] No ActivityType match for workout "${name}"`);
+        }
+        matches.forEach(m => {
+            const cloned = Object.assign({}, m);
+            cloned.preference = currentPreference++;
+            preferred.push(cloned);
+        });
+    });
+    return preferred;
+}
+
+function describeSchedule(groups) {
+    if (!groups || groups.length === 0) {
+        return 'none';
+    }
+    return groups.map(group => `${group.workouts.join(', ')} @ ${group.slots.join(', ')}`).join(' | ');
+}
 
 function getCenterName(centerInfoMap, centerId) {
     return centerInfoMap?.[centerId]?.centerName;
@@ -171,48 +191,70 @@ async function main() {
             };
         }
 
+        const weekday = weekdayFromDateId(date);
+        const daySchedule = PREFERRED_SCHEDULE[weekday] || [];
+        console.log(`[DEBUG] Booking weekday=${weekday}, schedule=${describeSchedule(daySchedule)}`);
+
+        if (daySchedule.length === 0) {
+            console.log(`No workout/slot preferences configured for ${weekday} (${date}). Skipping.`);
+            return { status: 'no_schedule', date, weekday };
+        }
+
         let booked = false;
         let bookedInfo = null;
 
-        for (let slot of PREFERRED_SLOTS) {
-            console.log(`[DEBUG] Checking slot ${slot}`);
-            let availableClassesInSlot = getSlots(classes.classByDateMap[date], slot, PREFERRED_CLASSES_IN_ORDER, centerInfoMap);
-            console.log(`[DEBUG] Slot ${slot}: ${availableClassesInSlot.length} candidate classes after filtering`);
+        for (let group of daySchedule) {
+            const preferredClasses = preferredClassesForNames(group.workouts);
+            console.log(`[DEBUG] Trying group workouts=${JSON.stringify(group.workouts)} slots=${JSON.stringify(group.slots)} classes=${JSON.stringify(preferredClasses)}`);
 
-            for (let classInfo of availableClassesInSlot) {
-                let waitlistCount = classInfo.waitlistInfo && classInfo.waitlistInfo.waitlistedUserCount || 0;
-                console.log(`[DEBUG] Evaluating class: id=${classInfo.id}, workout=${classInfo.workoutName}, state=${classInfo.state}, availableSeats=${classInfo.availableSeats}, waitlistCount=${waitlistCount}, preference=${classInfo.preference}`);
+            if (preferredClasses.length === 0) {
+                console.log(`[DEBUG] Skipping group with no matching ActivityType entries`);
+                continue;
+            }
 
-                // If it's waitlist and >= 15 people are waiting, skip it and look for the next preferred class
-                if (classInfo.state === 'WAITLIST_AVAILABLE' && waitlistCount >= 15) {
-                    console.log(`Skipping ${classInfo.workoutName} at ${slot} (Waitlist too long: ${waitlistCount} ahead)`);
-                    continue;
+            for (let slot of group.slots) {
+                console.log(`[DEBUG] Checking slot ${slot}`);
+                let availableClassesInSlot = getSlots(classes.classByDateMap[date], slot, preferredClasses, centerInfoMap);
+                console.log(`[DEBUG] Slot ${slot}: ${availableClassesInSlot.length} candidate classes after filtering`);
+
+                for (let classInfo of availableClassesInSlot) {
+                    let waitlistCount = classInfo.waitlistInfo && classInfo.waitlistInfo.waitlistedUserCount || 0;
+                    console.log(`[DEBUG] Evaluating class: id=${classInfo.id}, workout=${classInfo.workoutName}, state=${classInfo.state}, availableSeats=${classInfo.availableSeats}, waitlistCount=${waitlistCount}, preference=${classInfo.preference}`);
+
+                    // If it's waitlist and >= 15 people are waiting, skip it and look for the next preferred class
+                    if (classInfo.state === 'WAITLIST_AVAILABLE' && waitlistCount >= 15) {
+                        console.log(`Skipping ${classInfo.workoutName} at ${slot} (Waitlist too long: ${waitlistCount} ahead)`);
+                        continue;
+                    }
+
+                    console.log(`Found ${classInfo.workoutName} at ${slot} on ${date} at ${classInfo.centerName}`);
+
+                    if (classInfo.state === 'WAITLIST_AVAILABLE') {
+                        console.log(`Joining waitlist (${waitlistCount} people ahead)`);
+                    } else {
+                        console.log(`Booking (${classInfo.availableSeats} seats available)`);
+                    }
+
+                    let bookResponse = await bookClass(classInfo.id);
+                    console.log(`[DEBUG] Book response: ${JSON.stringify(bookResponse)}`);
+                    console.log(`Class booked successfully at ${classInfo.centerName}!`);
+                    booked = true;
+                    let actionUrl = bookResponse?.body?.action || bookResponse?.action || classInfo.cardAction?.url;
+                    bookedInfo = { workout: classInfo.workoutName, slot, date, centerName: classInfo.centerName, actionUrl };
+                    break;
                 }
-
-                console.log(`Found ${classInfo.workoutName} at ${slot} on ${date} at ${classInfo.centerName}`);
-
-                if (classInfo.state === 'WAITLIST_AVAILABLE') {
-                    console.log(`Joining waitlist (${waitlistCount} people ahead)`);
-                } else {
-                    console.log(`Booking (${classInfo.availableSeats} seats available)`);
+                if (booked) {
+                    break;
                 }
-
-                let bookResponse = await bookClass(classInfo.id);
-                console.log(`[DEBUG] Book response: ${JSON.stringify(bookResponse)}`);
-                console.log(`Class booked successfully at ${classInfo.centerName}!`);
-                booked = true;
-                let actionUrl = bookResponse?.body?.action || bookResponse?.action || classInfo.cardAction?.url;
-                bookedInfo = { workout: classInfo.workoutName, slot, date, centerName: classInfo.centerName, actionUrl };
-                break; // Break inner loop (classes)
             }
             if (booked) {
-                break; // Break outer loop (slots)
+                break;
             }
         }
 
         if (!booked) {
-            console.log(`No matching classes (${PREFERRED_WORKOUT_NAMES.join(', ')}) with acceptable waitlist available on ${date}`);
-            return { status: 'no_match', date };
+            console.log(`No matching classes (${describeSchedule(daySchedule)}) with acceptable waitlist available on ${date} (${weekday})`);
+            return { status: 'no_match', date, weekday, schedule: describeSchedule(daySchedule) };
         }
 
         return { status: 'booked', ...bookedInfo };
@@ -275,8 +317,10 @@ function buildNotification(result, retryNote) {
             return { title: 'Cultify: Class booked!', message: `${result.workout} at ${result.centerName} on ${result.date} (${result.slot})`, actionUrl: result.actionUrl };
         case 'already_booked':
             return { title: 'Cultify: Already booked', message: `${result.workout} at ${result.centerName} on ${result.date} (${result.slot})`, actionUrl: result.actionUrl };
+        case 'no_schedule':
+            return { title: 'Cultify: No class booked', message: `No workout/slot preferences configured for ${result.weekday} (${result.date}).${retryNote}` };
         case 'no_match':
-            return { title: 'Cultify: No class booked', message: `No matching classes (${PREFERRED_WORKOUT_NAMES.join(', ')}) with acceptable waitlist available on ${result.date}.${retryNote}` };
+            return { title: 'Cultify: No class booked', message: `No matching classes (${result.schedule}) with acceptable waitlist available on ${result.date}.${retryNote}` };
         default: {
             const dateSuffix = result.date ? ` (date=${result.date})` : '';
             return { title: 'Cultify: Booking failed', message: `${result.error || 'Unknown error'}${dateSuffix}.${retryNote}` };
@@ -301,7 +345,8 @@ async function run() {
     const result = await main();
 
     const succeeded = result.status === 'booked' || result.status === 'already_booked';
-    state.done = succeeded || state.attempts >= MAX_ATTEMPTS;
+    const noPointRetrying = result.status === 'no_schedule';
+    state.done = succeeded || noPointRetrying || state.attempts >= MAX_ATTEMPTS;
     saveState(state);
 
     let retryNote = '';

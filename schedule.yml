@@ -1,0 +1,17 @@
+# Weekday booking preferences. Days you omit are skipped.
+# List items on a day are tried in order (fallbacks).
+# Times can be "07:00:00", "7:00", or "7AM" — quote them so YAML keeps them as strings.
+
+monday:
+  - workout: HRX WORKOUT
+    slots: ["07:00:00", "08:00:00"]
+
+tuesday:
+  - workout: ADIDAS STRENGTH+
+    slots: ["07:30:00", "08:30:00"]
+
+# wednesday:
+#   - workout: HRX WORKOUT
+#     slots: ["07:00:00", "08:00:00"]
+#   - workout: BURN
+#     slots: ["09:00:00"]

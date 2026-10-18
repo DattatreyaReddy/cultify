@@ -60,5 +60,6 @@ cat <<'EOF'
    On MIUI/ColorOS/FuntouchOS/OneUI etc. also check the manufacturer's own
    "autostart"/"background activity" toggle for these apps.
 
-Copy your .env (see .env.example) into this repo before the next scheduled run.
+Copy your .env (see .env.example) into this repo and edit schedule.yml
+before the next scheduled run.
 EOF

@@ -10,7 +10,7 @@ Cultify books fitness classes at Cult.fit centers automatically, right when the 
 
 ## Features
 
-- Automatic class booking based on your preferences (center, time slots, workout type)
+- Automatic class booking based on your preferences (center, plus workout and time slots per weekday)
 - Smart booking logic (skips if already booked that day)
 - Waitlist support (joins the queue when a class is full, skips overly long waitlists — counts as a successful outcome)
 - Retries automatically on the next JobScheduler check (~15 min later) if nothing matched or a request failed, up to 3 attempts per day
@@ -21,7 +21,7 @@ Cultify books fitness classes at Cult.fit centers automatically, right when the 
 
 1. Extracts authentication from a browser curl command (`.env`)
 2. Fetches available classes via the Cult.fit API
-3. Filters by your configured preferences (center, time, workout type)
+3. Filters by your configured preferences (center, plus that weekday's workout and time slots)
 4. Checks for an existing booking on the target date — skips if found
 5. Books the first available matching class (or joins a short-enough waitlist)
 6. If nothing matched or a request failed, persists attempt state to `.cultify-state.json` (repo root) so the next JobScheduler check (~15 min later) retries automatically — up to 3 attempts/day total
@@ -54,7 +54,9 @@ cd cultify
 cp .env.example .env
 ```
 
-Edit `.env` and set `CURL_COMMAND` to the curl string from step 1. Adjust `PREFERRED_CENTER`, `PREFERRED_SLOTS`, `PREFERRED_WORKOUT`, and `ENABLE_WAITLIST` as needed — see `.env.example` for defaults and format.
+Edit `.env` and set `CURL_COMMAND` to the curl string from step 1. Adjust `PREFERRED_CENTER` and `ENABLE_WAITLIST` as needed — see `.env.example` for defaults and format.
+
+Edit `schedule.yml` for per-weekday workout and time-slot preferences. Days you omit are skipped.
 
 ### 3. Run setup
 
@@ -86,7 +88,7 @@ Cult.fit typically opens next-day booking in the evening — set `TARGET_TIME` t
 node index.js
 ```
 
-Runs the booking flow once immediately (with the same notification), useful for testing your `.env` and preferences before relying on the scheduled job.
+Runs the booking flow once immediately (with the same notification), useful for testing your `.env` and `schedule.yml` before relying on the scheduled job.
 
 Note: this respects the same persisted state as the scheduled job (see below) — if today is already marked done in `.cultify-state.json` (repo root), a manual run will just log that and exit. Delete that file (or wait for the next day) to force a fresh attempt.
 
@@ -110,9 +112,30 @@ Each invocation reads/writes `.cultify-state.json` (repo root) — `{ date, atte
 | `CURL_COMMAND` | Full curl command with auth headers/cookies (required) | — |
 | `PREFERRED_CITY` | Injected into cookies if missing | `Hyderabad` |
 | `PREFERRED_CENTER` | Numeric Cult.fit center ID | `1515` |
-| `PREFERRED_SLOTS` | Comma-separated `HH:MM:SS` slots, tried in order | `07:00:00,08:00:00,09:00:00` |
-| `PREFERRED_WORKOUT` | Comma-separated exact workout name(s), in preference order | `HRX WORKOUT` |
+| `SCHEDULE_FILE` | Path to weekday workout/slot YAML | `schedule.yml` (repo root) |
 | `ENABLE_WAITLIST` | Join waitlist when full (skips if 15+ people already waitlisted) | `true` |
+
+### Weekday schedule (`schedule.yml`)
+
+```yaml
+monday:
+  - workout: HRX WORKOUT
+    slots: ["07:00:00", "08:00:00"]
+
+tuesday:
+  - workout: ADIDAS STRENGTH+
+    slots: ["07:30:00", "08:30:00"]
+```
+
+That books HRX at 7:00 or 8:00 on Monday, and Adidas Strength+ at 7:30 or 8:30 on Tuesday. Days you omit are skipped. Quote times so YAML keeps them as strings (`"07:00:00"`, `"7:00"`, or `"7AM"`). Extra list items on the same day are fallbacks, tried in order:
+
+```yaml
+monday:
+  - workout: HRX WORKOUT
+    slots: ["07:00:00", "08:00:00"]
+  - workout: BURN
+    slots: ["09:00:00"]
+```
 
 ### Finding your center ID
 
