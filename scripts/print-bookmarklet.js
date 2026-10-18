@@ -15,7 +15,12 @@ const bookmarklet = `javascript:(function(){
   }
   try{ fromStore(localStorage); }catch(e){}
   try{ fromStore(sessionStorage); }catch(e){}
-  var payload='cultify-session:v1\\n'+[document.cookie].concat(extras).filter(Boolean).join('; ');
+  var cookies=[document.cookie].concat(extras).filter(Boolean).join('; ');
+  if(!/(?:^|;\\s*)at=[^;]+/.test(cookies) || !/(?:^|;\\s*)st=[^;]+/.test(cookies)){
+    alert('Cultify did not expose the required at/st login cookies to this bookmarklet (they may be HttpOnly). No session was copied. Use a current Cult.fit cURL/Cookie header with bash termux/paste-session.sh, or configure CURL_COMMAND in .env.');
+    return;
+  }
+  var payload='cultify-session:v1\\n'+cookies;
   function copyToClipboard(){
     if(!navigator.clipboard || !navigator.clipboard.writeText){
       prompt('Copy Cultify session, then run bash termux/paste-session.sh in Termux', payload);

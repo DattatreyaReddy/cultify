@@ -89,15 +89,15 @@ This method avoids storing cookies in `.env`, but it does not refresh the login 
 
 3. Whenever you need a session (including after it expires), open `https://next.cult.fit` in the same browser and sign in if prompted, then tap **Cultify session export** in the browser's Bookmarks menu. The bookmark is reused; do not recreate it for each refresh.
 
-   **Chrome for Android:** choose **Share → Termux**. Setup installs the Termux share handler, which saves the imported session to `.cultify-session`.
+   **Chrome for Android:** if tapping the bookmark in the Bookmarks menu does not execute it, open the address bar while on `next.cult.fit`, type `Cultify session export`, and tap the bookmark suggestion (the saved-bookmark result, not Search/Enter). Confirm the saved bookmark URL still starts with `javascript:`; Chrome may remove that prefix while editing, in which case edit and save it again. When the share sheet opens, choose **Share → Termux**. Setup installs the Termux share handler, which saves the imported session to `.cultify-session`.
 
-   **Firefox for Android:** the bookmarklet copies the session to the clipboard instead of opening Share, because Firefox's share handoff may treat the text as a file. After the success alert, switch to Termux and run:
+   **Firefox for Android:** the bookmarklet copies the session to the clipboard instead of opening Share, because Firefox's share handoff may treat the text as a file. If the required login cookies are available to the page, switch to Termux after the success alert and run:
 
    ```bash
    bash termux/paste-session.sh
    ```
 
-   If you already saved an older bookmarklet, regenerate it with `bash termux/create-bookmarklet.sh` and replace the bookmark URL once.
+   If you already saved an older bookmarklet, regenerate it with `bash termux/create-bookmarklet.sh` and replace the bookmark URL once. If it reports that it cannot read `at` / `st`, the browser is hiding those HttpOnly cookies; the bookmarklet cannot export them. Use a current cURL/Cookie header with `bash termux/paste-session.sh`, or configure `CURL_COMMAND` in `.env`.
 
 The bookmarklet may not see HttpOnly cookies. If the imported payload is missing `at` / `st`, copy a curl command or `Cookie` header from the browser and run:
 

@@ -11,11 +11,11 @@ const bookmarklet = execFileSync(process.execPath, [generatorPath], { encoding: 
     .trim()
     .replace(/^javascript:/, '');
 
-function makeContext(userAgent, clipboard, share) {
+function makeContext(userAgent, clipboard, share, cookies = 'at=access; st=session') {
     const alerts = [];
     const prompts = [];
     const context = {
-        document: { cookie: 'at=access; st=session' },
+        document: { cookie: cookies },
         localStorage: { getItem: () => null },
         sessionStorage: { getItem: () => null },
         navigator: { userAgent, clipboard, share },
@@ -64,4 +64,29 @@ test('other browsers keep the direct share flow', () => {
     vm.runInNewContext(bookmarklet, context);
 
     assert.match(sharedPayload.text, /^cultify-session:v1\n/);
+});
+
+test('bookmarklet explains when the browser hides authentication cookies', () => {
+    let copied = false;
+    let shared = false;
+    const { context, alerts, prompts } = makeContext(
+        'Mozilla/5.0 Firefox/140.0',
+        { writeText: () => {
+            copied = true;
+            return Promise.resolve();
+        } },
+        () => {
+            shared = true;
+            return Promise.resolve();
+        },
+        ''
+    );
+
+    vm.runInNewContext(bookmarklet, context);
+
+    assert.equal(copied, false);
+    assert.equal(shared, false);
+    assert.deepEqual(prompts, []);
+    assert.match(alerts[0], /required at\/st login cookies/);
+    assert.match(alerts[0], /CURL_COMMAND/);
 });
