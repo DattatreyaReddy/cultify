@@ -42,7 +42,8 @@ echo "==> Installing automatic post-pull upgrade hooks..."
 bash "$REPO_DIR/scripts/install-git-hooks.sh"
 
 chmod +x "$REPO_DIR/termux/watcher.sh" "$REPO_DIR/termux/run-booking.sh" \
-    "$REPO_DIR/termux/url-opener.sh" "$REPO_DIR/termux/paste-session.sh"
+    "$REPO_DIR/termux/url-opener.sh" "$REPO_DIR/termux/paste-session.sh" \
+    "$REPO_DIR/termux/create-bookmarklet.sh"
 
 echo "==> Installing Termux share handler (termux-url-opener)..."
 mkdir -p "$HOME/bin"

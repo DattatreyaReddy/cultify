@@ -67,13 +67,15 @@ It prints two things you must do manually (Android doesn't allow scripting these
 
 This method avoids storing cookies in `.env`, but it does not refresh the login automatically. Create the bookmarklet once; whenever a session is missing or expires, log in and reuse the saved bookmark to import a fresh one.
 
-1. In Termux, generate the bookmarklet code:
+1. In Termux, generate the bookmarklet and copy it to the clipboard:
 
    ```bash
-   node scripts/print-bookmarklet.js
+   bash termux/create-bookmarklet.sh
    ```
 
-2. Copy the entire `javascript:...` line from the output. In your browser, create a bookmark for any page (for example, `https://next.cult.fit`), then edit that bookmark: set its name to `Cultify session export` and replace its URL/address with the copied `javascript:...` line. Save it. Browser menu names can vary slightly by version.
+   If Termux:API clipboard support is unavailable, the script prints the bookmarklet instead; copy the entire `javascript:...` line.
+
+2. In your browser, create a bookmark for any page (for example, `https://next.cult.fit`), then edit that bookmark: set its name to `Cultify session export` and paste the bookmarklet into its URL/address field. Save it. Browser menu names can vary slightly by version.
 
    **Chrome for Android**
    - Open `https://next.cult.fit` and sign in, then use **⋮ → Add to bookmarks** (or the star icon) to create a temporary bookmark.

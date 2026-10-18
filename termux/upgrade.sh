@@ -43,6 +43,6 @@ echo "==> Upgrade complete. Now at $TARGET"
 echo
 echo "Next:"
 echo "  - Review schedule.local.yml config entries."
-echo "  - Session refresh: node scripts/print-bookmarklet.js"
+echo "  - Create bookmarklet: bash termux/create-bookmarklet.sh"
 echo "    then Share to Termux, or: bash termux/paste-session.sh"
 echo "See CHANGELOG.md for details."

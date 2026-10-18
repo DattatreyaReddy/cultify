@@ -1,8 +1,19 @@
 "use strict";
 const fs = require('node:fs');
 const path = require('node:path');
-const config = require('./config'),
-    auth = require('./auth'),
+let config;
+try {
+    config = require('./config');
+} catch (error) {
+    if (error.code !== 'NO_CULTFIT_SESSION') {
+        throw error;
+    }
+
+    console.error(`\nCultify could not start\n${'='.repeat(24)}\n\n${error.message}\n`);
+    process.exit(1);
+}
+
+const auth = require('./auth'),
     /*
     Maintaining a list of activities and my preference
     The id field is the workoutId which part of classes object as a response of `api/cult/classes/` API

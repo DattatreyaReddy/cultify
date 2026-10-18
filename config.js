@@ -79,14 +79,20 @@ if (process.env.CURL_COMMAND) {
         cookies: process.env.COOKIES
     };
 } else {
-    throw new Error(
-        "No Cult.fit session found!\n\n" +
-        "CURL_COMMAND is optional when using browser login.\n" +
-        "Log in at https://next.cult.fit, then import cookies with the bookmarklet/share flow or run:\n" +
-        "  bash termux/paste-session.sh\n" +
-        "The imported session is saved in .cultify-session and used automatically on the next run.\n\n" +
-        "Alternatively, set CURL_COMMAND or COOKIES in .env. See README.md for instructions."
+    const error = new Error(
+        "No Cult.fit session found.\n\n" +
+        `No imported session was found at ${session.sessionFilePath()}.\n` +
+        "Setup does not sign in or import browser cookies.\n\n" +
+        "Browser login (recommended)\n" +
+        "  1. Create the bookmarklet once: bash termux/create-bookmarklet.sh\n" +
+        "  2. Sign in at https://next.cult.fit and run the saved Cultify bookmarklet.\n" +
+        "  3. Choose Share -> Termux and confirm the session was saved.\n\n" +
+        "Import a curl or Cookie header\n" +
+        "  Run: bash termux/paste-session.sh\n\n" +
+        "Alternatively, set CURL_COMMAND or COOKIES in .env. See README.md for details."
     );
+    error.code = 'NO_CULTFIT_SESSION';
+    throw error;
 }
 
 const DAY_ALIASES = {

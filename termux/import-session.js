@@ -49,7 +49,7 @@ function main() {
     }
 
     const imported = session.importSessionPayload(payload);
-    const message = `Saved ${imported.keys.join(', ')} to .cultify-session`;
+    const message = `Saved ${imported.keys.join(', ')} to ${session.sessionFilePath()}`;
     console.log(message);
     notify('Cultify: Session saved', 'Cookies updated. The next booking run will use them.');
 }
